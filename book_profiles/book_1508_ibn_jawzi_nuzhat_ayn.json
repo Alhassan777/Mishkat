@@ -1,0 +1,42 @@
+{
+  "organization_type": "alphabetical_by_term",
+  "entry_delimiter": "### ‌ بَاب",
+  "verse_citation_format": "text_in_braces",
+  "resolution_markers": [
+    "أحدها:",
+    "وَالثَّانِي:",
+    "وَالثَّالِث:",
+    "وَالرَّابِع:",
+    "وَالْخَامِس:"
+  ],
+  "entry_count_estimate": 325,
+  "primary_categories": [
+    2
+  ],
+  "extraction_difficulty": "easy",
+  "muqaddimah_summary": null,
+  "methodology_note": "The author's methodology involves identifying a specific word in the Quran, providing its linguistic definition, and then enumerating its various semantic interpretations (وجوه) as found in different Quranic contexts, supported by direct verse citations for each meaning.",
+  "numbering_convention": "unknown",
+  "has_mnemonic_content": false,
+  "example_entries": [
+    "بَاب السُّجُود)\nالسُّجُود فِي اللُّغَة: خفض الرَّأْس وَإِن لم تصل الْجَبْهَة إِلَى الأَرْض. وكل ذليل فَهُوَ ساجد.\nوَذكر بعض الْمُفَسّرين أَن السُّجُود فِي الْقُرْآن على ثَلَاثَة أوجه:.",
+    "بَاب السَّعْي)\nالسَّعْي: فِي الأَصْل. الْإِسْرَاع فِي المَشْي، وَهُوَ دون الْعَدو.\nوَذكر الْمُفَسِّرُونَ أَنه فِي الْقُرْآن على ثَلَاثَة أوجه: -",
+    "بَاب السفة)\nقَالَ الزّجاج: (69 / ب) أصل السَّفه فِي اللُّغَة: خفَّة الْحلم، يُقَال: ثوب سفية إِذا كَانَ رَقِيقا بَالِيًا. وَقَالَ ابْن فَارس: يُقَال تسفهت الرّيح [الشّجر] : إِذا مَالَتْ بِهِ.\nقَالَ ذُو الرمة: -\n(فمادت كَمَا مادت رماح تسفهت\n…\nأعاليها مر الرِّيَاح النواسم)\nوَذكر بعض الْمُفَسّرين أَن السُّفَهَاء فِي الْقُرْآن على أَرْبَعَة أوجه: -"
+  ],
+  "question_markers": [],
+  "multi_entry_window": true,
+  "profiler_notes": "The book is structured by individual words ('باب') which are then categorized by the number of meanings ('أوجه') they possess. Each 'باب' contains multiple distinct semantic comparisons (each 'وجه' with its verse examples), making it a multi-entry window. Entry numbering for 'باب' is present but not always consistent or sequential.",
+  "_meta": {
+    "slug": "book_1508_ibn_jawzi_nuzhat_ayn",
+    "tier": "future_expansion",
+    "shamela_id": 6334,
+    "book_title": "نزهة الأعين النواظر في علم الوجوه والنظائر",
+    "author": "جمال الدين أبو الفرج عبد الرحمن بن علي بن محمد الجوزي(ت 597هـ)",
+    "page_count": "645",
+    "source_md": "نزهة الأعين النواظر.md",
+    "profiled_at": "2026-05-17T14:51:00.213290+00:00",
+    "model": "gemini-2.5-flash",
+    "tokens_in": 16628,
+    "tokens_out": 684
+  }
+}

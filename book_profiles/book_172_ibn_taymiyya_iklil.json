@@ -1,0 +1,51 @@
+{
+  "organization_type": "treatise_freeform",
+  "entry_delimiter": "فصل:",
+  "verse_citation_format": "text_in_braces",
+  "resolution_markers": [
+    "فنقول:",
+    "والجواب:",
+    "نكتة ذلك",
+    "نكتة هذا الكلام",
+    "نكتة الجواب",
+    "يبين ذلك",
+    "والصواب"
+  ],
+  "entry_count_estimate": 5,
+  "primary_categories": [
+    7,
+    2,
+    5
+  ],
+  "extraction_difficulty": "hard",
+  "muqaddimah_summary": null,
+  "methodology_note": "The author clarifies the meaning of 'ta'wil' and 'mutashabih', arguing that while the ultimate reality/outcome of some verses is known only to God, their meanings are comprehensible. He refutes those who deny the knowability of meanings or distort them, using logical arguments to affirm the Salaf's approach to divine attributes.",
+  "numbering_convention": "unknown",
+  "has_mnemonic_content": false,
+  "example_entries": [
+    "فيقال لمن ادعى في هذا أنه متشابه لا يعلم معناه: أتقول هذا في جميع ما سمى الله ووصف به نفسه أم في البعض؟ فإن قلت: هذا في الجميع كان هذا عنادا ظاهرا وجحدا لما يعلم بالاضطرار من دين الإسلام بل كفر صريح.",
+    "ثم يقال لهذا المعاند: فهل هذه الأسماء دالة على الإله المعبود وعلى حق موجود أم لا؟ فإن قال: لا كان معطلا محضا وما أعلم مسلما يقول\nهذا. وإن قال: نعم قيل له: فلم فهمت منها دلالتها على نفس الرب ولم تفهم دلالتها على ما فيها من المعاني من الرحمة والعلم وكلاهما في الدلالة سواء؟",
+    "فيقال لمن أثبت شيئا ونفى آخر: لم نفيت مثلا حقيقة رحمته ومحبته وأعدت ذلك إلى إرادته؟ فإن قال: لأن المعنى المفهوم من الرحمة في حقنا هي رقة تمتنع على الله قيل له: والمعنى المفهوم من الإرادة في حقنا هي ميل يمتنع على الله."
+  ],
+  "question_markers": [
+    "فيقال له:",
+    "قيل له:",
+    "ثم يقال لهذا المعاند:",
+    "فيقال لمن أثبت شيئا ونفى آخر:"
+  ],
+  "multi_entry_window": false,
+  "profiler_notes": "The text is a continuous scholarly treatise, not a collection of discrete entries comparing specific verses. Its primary focus is a deep theological and linguistic analysis of 'ta'wil' and 'mutashabih', often refuting opposing views through dialectical arguments. Quranic verses are cited extensively but without surah or ayah numbers, posing a significant challenge for automated verse identification.",
+  "_meta": {
+    "slug": "book_172_ibn_taymiyya_iklil",
+    "tier": "future_expansion",
+    "shamela_id": 9220,
+    "book_title": "الإكليل في المتشابه والتأويل",
+    "author": "تقي الدين أبو العباس أحمد بن عبد الحليم بن عبد السلام بن عبد الله بن أبي القاسم بن محمد ابن تيمية الحراني الحنبلي الدمشقي(ت 728هـ)",
+    "page_count": "52",
+    "source_md": "الإكليل في المتشابه والتأويل.md",
+    "profiled_at": "2026-05-17T14:48:29.293069+00:00",
+    "model": "gemini-2.5-flash",
+    "tokens_in": 42562,
+    "tokens_out": 670
+  }
+}
