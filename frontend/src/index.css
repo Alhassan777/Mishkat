@@ -1,0 +1,173 @@
+@import "tailwindcss";
+
+:root {
+  --font-arabic: 'Scheherazade New', 'Noto Naskh Arabic', serif;
+  --font-arabic-ui: 'Noto Sans Arabic', sans-serif;
+  --font-latin: 'Inter', system-ui, sans-serif;
+  
+  /* Deep Ocean blues with Golden Ink accents */
+  --bg-deep: #050A15;
+  --bg-panel: #0A1224;
+  --bg-card: transparent;
+  --border: rgba(212, 175, 55, 0.10);
+  --gold: #D4AF37;
+  --gold-warm: #E8C86A;
+  --gold-dim: rgba(212, 175, 55, 0.14);
+  --gold-border: rgba(212, 175, 55, 0.25);
+  --text-primary: #F0F4F8;
+  --text-muted: #94A3B8;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body, #root {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  background: var(--bg-deep);
+  color: var(--text-primary);
+  font-family: var(--font-latin);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Hide scrollbar utility */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* Arabic text */
+.arabic {
+  font-family: var(--font-arabic);
+  direction: rtl;
+  text-align: right;
+  line-height: 1.8;
+  font-feature-settings: "kern" 1;
+}
+
+.arabic-ui {
+  font-family: var(--font-arabic-ui);
+  direction: rtl;
+  text-align: right;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(201,168,76,0.15); border-radius: 2px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(201,168,76,0.28); }
+
+/* ─── Islamic geometric lattice background ─── */
+
+/*
+  Mashrabiya-inspired diamond grid.
+  Three sets of hairlines (0°, 60°, 120°) form a hexagonal lattice
+  that directly references Islamic screen-work and zellige tile grout lines.
+  More visible than ±45° — legible as an intentional pattern, not texture noise.
+*/
+.bg-geometric {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.38;
+  background-image:
+    repeating-linear-gradient(
+      0deg,
+      rgba(212, 175, 55, 0.02) 0px,
+      rgba(212, 175, 55, 0.02) 1px,
+      transparent 1px,
+      transparent 72px
+    ),
+    repeating-linear-gradient(
+      60deg,
+      rgba(212, 175, 55, 0.02) 0px,
+      rgba(212, 175, 55, 0.02) 1px,
+      transparent 1px,
+      transparent 72px
+    ),
+    repeating-linear-gradient(
+      120deg,
+      rgba(212, 175, 55, 0.02) 0px,
+      rgba(212, 175, 55, 0.02) 1px,
+      transparent 1px,
+      transparent 72px
+    );
+}
+
+/* ─── Ambient glow — jewel tones of Islamic art ─── */
+
+@keyframes ambientPulse {
+  0%, 100% { opacity: 0.68; transform: scale(1); }
+  50%       { opacity: 1;   transform: scale(1.04); }
+}
+
+/*
+  Lamp-lit atmosphere — warm gold from the left like a lantern,
+  deep ocean blue from the right, subtle dark warmth at the base.
+*/
+.nebula {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 54% 48% at 50% 40%, rgba(212, 175, 55, 0.18) 0%, rgba(212, 175, 55, 0.07) 30%, transparent 74%),
+    radial-gradient(ellipse 68% 56% at 50% 52%, rgba(10, 18, 36, 0.4) 0%, rgba(10, 18, 36, 0.15) 45%, transparent 82%),
+    radial-gradient(ellipse 88% 76% at 50% 58%, rgba(5, 10, 21, 0.84) 0%, rgba(5, 10, 21, 0.98) 68%);
+  animation: ambientPulse 20s ease-in-out infinite;
+}
+
+.mishkah-vignette {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 50% 48%, transparent 0%, rgba(5, 10, 21, 0.24) 45%, rgba(5, 10, 21, 0.84) 74%, rgba(5, 10, 21, 0.98) 100%);
+}
+
+.nur-particles {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image:
+    radial-gradient(circle at 10% 88%, rgba(212, 175, 55, 0.30) 0 1.2px, transparent 2px),
+    radial-gradient(circle at 22% 72%, rgba(212, 175, 55, 0.22) 0 1.4px, transparent 2px),
+    radial-gradient(circle at 37% 92%, rgba(212, 175, 55, 0.2) 0 1.2px, transparent 2px),
+    radial-gradient(circle at 49% 84%, rgba(212, 175, 55, 0.25) 0 1.3px, transparent 2px),
+    radial-gradient(circle at 67% 89%, rgba(212, 175, 55, 0.21) 0 1.4px, transparent 2px),
+    radial-gradient(circle at 85% 80%, rgba(212, 175, 55, 0.26) 0 1.5px, transparent 2px);
+  animation: ascendParticles 20s linear infinite;
+  opacity: 0.35;
+}
+
+@keyframes ascendParticles {
+  0% {
+    transform: translateY(0);
+    opacity: 0.16;
+  }
+  50% {
+    opacity: 0.4;
+  }
+  100% {
+    transform: translateY(-70px);
+    opacity: 0.12;
+  }
+}
+
+/* ─── Loading animations ─────────────────────────────────── */
+
+@keyframes slideBar {
+  0%   { transform: translateX(-100%); }
+  100% { transform: translateX(300%);  }
+}
+
+@keyframes graphDotPulse {
+  0%, 100% { opacity: 0.3; transform: scale(0.85); }
+  50%       { opacity: 1;   transform: scale(1.15); }
+}
