@@ -1,0 +1,27 @@
+# Secrets — never commit
+.env
+
+# Pipeline output
+output/
+.cache/
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+dist/
+build/
+
+# Node
+node_modules/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Tooling
+.gstack/
+.claude/
+.cursor/
