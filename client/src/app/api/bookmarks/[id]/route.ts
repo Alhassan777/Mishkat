@@ -1,0 +1,31 @@
+import { NextResponse } from "next/server";
+import { callUserApi } from "@/lib/quran/user-server";
+
+export const dynamic = "force-dynamic";
+
+/**
+ * DELETE /api/bookmarks/[id] — remove a saved āyah by its QF bookmark id.
+ */
+export async function DELETE(
+  _req: Request,
+  { params }: { params: Promise<{ id: string }> },
+) {
+  const { id } = await params;
+  if (!id) return NextResponse.json({ error: "id required" }, { status: 400 });
+
+  const r = await callUserApi(`/auth/v1/bookmarks/${encodeURIComponent(id)}`, {
+    method: "DELETE",
+  });
+  if (r.kind === "unauthorized") {
+    return NextResponse.json({ error: "Not signed in" }, { status: 401 });
+  }
+  const res = r.response;
+  if (!res.ok) {
+    const text = await res.text();
+    return NextResponse.json(
+      { error: `Upstream ${res.status}: ${text.slice(0, 200)}` },
+      { status: 502 },
+    );
+  }
+  return NextResponse.json({ ok: true });
+}

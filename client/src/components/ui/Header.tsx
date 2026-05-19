@@ -2,6 +2,7 @@
 
 import { useGraphStore } from "@/lib/store";
 import { SettingsPopover } from "./SettingsPopover";
+import { SignInWidget } from "@/components/auth/SignInWidget";
 
 export function Header() {
   const graph = useGraphStore((s) => s.graph);
@@ -27,6 +28,7 @@ export function Header() {
             <Stat label="Scholars" value={graph.meta.books.toString()} />
           </>
         )}
+        <SignInWidget />
         <SettingsPopover />
       </div>
     </header>

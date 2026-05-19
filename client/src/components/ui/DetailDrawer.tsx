@@ -10,6 +10,7 @@ import { AudioButton } from "@/components/quran/AudioButton";
 import { PairAudioButton } from "@/components/quran/PairAudioButton";
 import { TafsirPanel } from "@/components/quran/TafsirPanel";
 import { diffWordSets } from "@/components/quran/diff";
+import { SaveAyahButton } from "@/components/ui/SaveAyahButton";
 import { CATEGORY_COLOR, CATEGORY_LABEL, type Category, type Edge, type GraphData, type Opinion } from "@/types/graph";
 
 export function DetailDrawer() {
@@ -89,6 +90,7 @@ function NodeView({ graph, id, onClose }: { graph: GraphData; id: string; onClos
           <VerseBody node={node} verse={verse} size={28} />
           <div className="mt-4 flex items-center gap-2">
             <AudioButton url={verse?.audio?.url} label="Recite" />
+            <SaveAyahButton verseKey={id} />
             {enrichment && !enrichment.available && (
               <span className="font-sans text-[10.5px] uppercase tracking-[0.22em] text-text-faint">
                 · enable audio & translation in settings
