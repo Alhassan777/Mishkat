@@ -2,6 +2,14 @@
 
 import { useMemo } from "react";
 import { useGraphStore } from "@/lib/store";
+import { useSettings } from "@/lib/settings-store";
+import { useVerse } from "@/lib/quran/useVerse";
+import { WordTokens } from "@/components/quran/WordTokens";
+import { TranslationLine } from "@/components/quran/TranslationLine";
+import { AudioButton } from "@/components/quran/AudioButton";
+import { PairAudioButton } from "@/components/quran/PairAudioButton";
+import { TafsirPanel } from "@/components/quran/TafsirPanel";
+import { diffWordSets } from "@/components/quran/diff";
 import { CATEGORY_COLOR, CATEGORY_LABEL, type Category, type Edge, type GraphData, type Opinion } from "@/types/graph";
 
 export function DetailDrawer() {
@@ -45,6 +53,15 @@ function NodeView({ graph, id, onClose }: { graph: GraphData; id: string; onClos
   const node = graph.nodes[id];
   const setEdge = useGraphStore((s) => s.setSelectedEdge);
   const activeCategories = useGraphStore((s) => s.activeCategories);
+  const s = useSettings();
+
+  const enrichment = useVerse(id, {
+    words: s.showWordByWord,
+    translation: s.showTranslation ? s.translationId : undefined,
+    tafsir: s.showTafsir ? s.tafsirId : undefined,
+    reciter: s.reciterId,
+  });
+  const verse = enrichment?.available && !enrichment.error ? enrichment.verse : undefined;
 
   const allCount = node.e.length;
   const edges = useMemo(() => {
@@ -69,14 +86,18 @@ function NodeView({ graph, id, onClose }: { graph: GraphData; id: string; onClos
         <SurahCard node={node} />
 
         <div className="rise mt-7">
-          <p
-            className="font-quran text-[28px] leading-[2.05] text-text"
-            dir="rtl"
-            lang="ar"
-          >
-            {node.t}
-          </p>
+          <VerseBody node={node} verse={verse} size={28} />
+          <div className="mt-4 flex items-center gap-2">
+            <AudioButton url={verse?.audio?.url} label="Recite" />
+            {enrichment && !enrichment.available && (
+              <span className="font-sans text-[10.5px] uppercase tracking-[0.22em] text-text-faint">
+                · enable audio & translation in settings
+              </span>
+            )}
+          </div>
         </div>
+
+        {s.showTafsir && verse?.tafsirs?.[0] && <TafsirPanel tafsir={verse.tafsirs[0]} />}
 
         <Meta label="Juzʾ" value={`${node.j}`} secondary={`Hizb ¼ · ${node.hq}`} />
 
@@ -151,6 +172,34 @@ function ComparisonView({
   const [idA, idB] = pair;
   const a = graph.nodes[idA];
   const b = graph.nodes[idB];
+  const s = useSettings();
+
+  const eA = useVerse(idA, {
+    words: s.showWordByWord,
+    translation: s.showTranslation ? s.translationId : undefined,
+    reciter: s.reciterId,
+  });
+  const eB = useVerse(idB, {
+    words: s.showWordByWord,
+    translation: s.showTranslation ? s.translationId : undefined,
+    reciter: s.reciterId,
+  });
+  const verseA = eA?.available && !eA.error ? eA.verse : undefined;
+  const verseB = eB?.available && !eB.error ? eB.verse : undefined;
+
+  // Diff masks — which word positions are unique to one ayah vs. the other.
+  const { maskA, maskB } = useMemo(() => {
+    const wordsOf = (vs: typeof verseA) =>
+      (vs?.words ?? [])
+        .filter((w) => w.charTypeName === "word")
+        .map((w) => w.textUthmani ?? w.text ?? "");
+    const wa = wordsOf(verseA);
+    const wb = wordsOf(verseB);
+    if (wa.length === 0 || wb.length === 0)
+      return { maskA: undefined, maskB: undefined };
+    const { uniqueA, uniqueB } = diffWordSets(wa, wb);
+    return { maskA: uniqueA, maskB: uniqueB };
+  }, [verseA, verseB]);
 
   // Find the edge.
   const edge = useMemo<Edge | null>(() => {
@@ -178,16 +227,25 @@ function ComparisonView({
       />
 
       <div className="thin-scroll flex-1 overflow-y-auto px-7 pb-12">
-        <div className="mt-2 flex items-center gap-3">
-          <CategoryChip cat={edge.pc} />
-          <span className="font-sans text-[10.5px] uppercase tracking-[0.24em] text-text-faint">
-            {edge.ops.length} scholarly reading{edge.ops.length === 1 ? "" : "s"}
-          </span>
+        <div className="mt-2 flex items-center justify-between gap-3">
+          <div className="flex items-center gap-3">
+            <CategoryChip cat={edge.pc} />
+            <span className="font-sans text-[10.5px] uppercase tracking-[0.24em] text-text-faint">
+              {edge.ops.length} reading{edge.ops.length === 1 ? "" : "s"}
+            </span>
+          </div>
+          <PairAudioButton urlA={verseA?.audio?.url} urlB={verseB?.audio?.url} />
         </div>
 
-        <AyahCard side="A" node={a} />
+        <AyahCard side="A" node={a} verse={verseA} diffMask={maskA} />
         <Divider />
-        <AyahCard side="B" node={b} />
+        <AyahCard side="B" node={b} verse={verseB} diffMask={maskB} />
+
+        {(maskA?.size || maskB?.size) && s.showWordByWord ? (
+          <p className="mt-4 font-sans text-[10.5px] uppercase tracking-[0.22em] text-text-faint">
+            Highlighted words appear in one āyah but not the other
+          </p>
+        ) : null}
 
         <SectionHeading left="The readings" right={`${edge.ops.length}`} />
 
@@ -274,10 +332,22 @@ function SectionHeading({ left, right }: { left: string; right?: string }) {
   );
 }
 
-function AyahCard({ side, node }: { side: "A" | "B"; node: GraphData["nodes"][string] }) {
+type VerseLike = NonNullable<ReturnType<typeof useVerse>>["verse"];
+
+function AyahCard({
+  side,
+  node,
+  verse,
+  diffMask,
+}: {
+  side: "A" | "B";
+  node: GraphData["nodes"][string];
+  verse?: VerseLike;
+  diffMask?: Set<number>;
+}) {
   return (
     <div className="mt-5 rise">
-      <div className="mb-2 flex items-center justify-between">
+      <div className="mb-3 flex items-center justify-between">
         <div className="flex items-center gap-2">
           <span className="flex h-5 w-5 items-center justify-center rounded-full border border-hairline-strong font-sans text-[10px] text-ink">
             {side}
@@ -287,18 +357,53 @@ function AyahCard({ side, node }: { side: "A" | "B"; node: GraphData["nodes"][st
           </span>
           <span className="font-sans text-[11px] text-text-faint">· {node.sn}</span>
         </div>
-        <span className="font-sans text-[10.5px] uppercase tracking-[0.22em] text-text-faint">
-          Juzʾ {node.j}
-        </span>
+        <div className="flex items-center gap-3">
+          <span className="font-sans text-[10.5px] uppercase tracking-[0.22em] text-text-faint">
+            Juzʾ {node.j}
+          </span>
+          <AudioButton url={verse?.audio?.url} />
+        </div>
       </div>
-      <p
-        className="font-quran text-[25px] leading-[2.05] text-text"
-        dir="rtl"
-        lang="ar"
-      >
-        {node.t}
-      </p>
+      <VerseBody node={node} verse={verse} size={25} diffMask={diffMask} />
     </div>
+  );
+}
+
+/**
+ * Shared verse renderer. Falls back to plain Arabic text when the
+ * Quran.com enrichment hasn't loaded (or is disabled / unavailable).
+ */
+function VerseBody({
+  node,
+  verse,
+  size,
+  diffMask,
+}: {
+  node: GraphData["nodes"][string];
+  verse?: VerseLike;
+  size: number;
+  diffMask?: Set<number>;
+}) {
+  const s = useSettings();
+  const words = verse?.words?.filter((w) => w.charTypeName === "word") ?? [];
+  const translation = verse?.translations?.[0];
+
+  return (
+    <>
+      {s.showWordByWord && words.length > 0 ? (
+        <WordTokens words={words} size={size - 3} diffMask={diffMask} />
+      ) : (
+        <p
+          className="font-quran text-text"
+          dir="rtl"
+          lang="ar"
+          style={{ fontSize: size, lineHeight: 2.05 }}
+        >
+          {node.t}
+        </p>
+      )}
+      {s.showTranslation && <TranslationLine translation={translation} />}
+    </>
   );
 }
 

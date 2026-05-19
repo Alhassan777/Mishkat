@@ -1,6 +1,7 @@
 "use client";
 
 import { useGraphStore } from "@/lib/store";
+import { SettingsPopover } from "./SettingsPopover";
 
 export function Header() {
   const graph = useGraphStore((s) => s.graph);
@@ -26,6 +27,7 @@ export function Header() {
             <Stat label="Scholars" value={graph.meta.books.toString()} />
           </>
         )}
+        <SettingsPopover />
       </div>
     </header>
   );
