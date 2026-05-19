@@ -44,11 +44,18 @@ export function DetailDrawer() {
 function NodeView({ graph, id, onClose }: { graph: GraphData; id: string; onClose: () => void }) {
   const node = graph.nodes[id];
   const setEdge = useGraphStore((s) => s.setSelectedEdge);
+  const activeCategories = useGraphStore((s) => s.activeCategories);
 
-  const edges = useMemo(
-    () => node.e.map((i) => ({ idx: i, edge: graph.edges[i] })).sort((a, b) => b.edge.w - a.edge.w),
-    [graph, node],
-  );
+  const allCount = node.e.length;
+  const edges = useMemo(() => {
+    const list = node.e.map((i) => ({ idx: i, edge: graph.edges[i] }));
+    const filtered =
+      activeCategories.size === 0
+        ? list
+        : list.filter(({ edge }) => activeCategories.has(edge.pc));
+    return filtered.sort((a, b) => b.edge.w - a.edge.w);
+  }, [graph, node, activeCategories]);
+  const hiddenCount = allCount - edges.length;
 
   return (
     <>
@@ -77,6 +84,17 @@ function NodeView({ graph, id, onClose }: { graph: GraphData; id: string; onClos
           left="Connections"
           right={`${edges.length} thread${edges.length === 1 ? "" : "s"}`}
         />
+
+        {hiddenCount > 0 && (
+          <p className="mt-2 font-sans text-[10.5px] uppercase tracking-[0.22em] text-text-faint">
+            {hiddenCount} more outside the active lens
+          </p>
+        )}
+        {edges.length === 0 && (
+          <p className="mt-4 rounded-lg border border-hairline bg-surface/40 px-4 py-5 text-center font-sans text-[12.5px] text-text-muted">
+            No threads of this kind reach this āyah. Clear the lens to see all {allCount}.
+          </p>
+        )}
 
         <ul className="mt-3 flex flex-col gap-2">
           {edges.map(({ idx, edge }) => {

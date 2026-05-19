@@ -57,10 +57,20 @@ def main() -> None:
         }
 
     # Edges — undirected; dedupe by sorted pair.
+    # Source data lists each connection from both endpoints with the same
+    # record_id, so we must dedupe opinions per edge by record_id. Self-loops
+    # (an āyah listed as connected to itself) are dropped entirely.
     edges: list[dict] = []
     seen: dict[str, int] = {}
+    edge_record_ids: list[set[str]] = []
+    self_loops_dropped = 0
+    duplicate_opinions_dropped = 0
+
     for src, n in raw_nodes.items():
         for tgt, conn in n.get("connections", {}).items():
+            if src == tgt:
+                self_loops_dropped += 1
+                continue
             key = "|".join(sorted([src, tgt]))
             if key in seen:
                 idx = seen[key]
@@ -72,7 +82,14 @@ def main() -> None:
                     "b": key.split("|")[1],
                     "ops": [],
                 })
+                edge_record_ids.append(set())
             for op in conn.get("opinions", []):
+                rid = op.get("record_id")
+                if rid and rid in edge_record_ids[idx]:
+                    duplicate_opinions_dropped += 1
+                    continue
+                if rid:
+                    edge_record_ids[idx].add(rid)
                 slim_op = {
                     "bk": book_idx(op.get("book_title_ar"), op.get("author_ar")),
                     "c": op.get("category") or "",
@@ -128,6 +145,7 @@ def main() -> None:
     size_mb = OUT.stat().st_size / (1024 * 1024)
     print(f"Wrote {OUT}")
     print(f"  nodes={len(slim_nodes)} edges={len(edges)} books={len(books)}")
+    print(f"  dropped: {self_loops_dropped} self-loops, {duplicate_opinions_dropped} duplicate opinions")
     print(f"  size={size_mb:.2f} MB")
 
 

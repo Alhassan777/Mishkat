@@ -17,8 +17,15 @@ export function FilterRail() {
   const toggle = useGraphStore((s) => s.toggleCategory);
   const clear = useGraphStore((s) => s.clearCategories);
 
+  const hint = active.size === 0
+    ? "Isolate threads by kind of similarity"
+    : `Showing ${active.size === 1 ? "one lens" : `${active.size} lenses`} — others dimmed`;
+
   return (
     <div className="pointer-events-none absolute inset-x-0 bottom-7 z-30 flex flex-col items-center gap-3">
+      <div className="font-sans text-[10.5px] uppercase tracking-[0.32em] text-text-faint">
+        {hint}
+      </div>
       <div className="hairline w-40 opacity-60" />
       <div className="pointer-events-auto flex items-center gap-2 rounded-full border border-hairline bg-surface/55 px-2.5 py-1.5 backdrop-blur-md">
         <span className="ml-2 mr-1 font-sans text-[10.5px] uppercase tracking-[0.26em] text-text-faint">

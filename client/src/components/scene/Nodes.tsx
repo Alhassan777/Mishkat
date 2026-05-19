@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useRef } from "react";
 import { useFrame, type ThreeEvent } from "@react-three/fiber";
 import * as THREE from "three";
-import type { GraphData } from "@/types/graph";
+import type { Category, GraphData } from "@/types/graph";
 import type { Layout } from "@/lib/layout";
 import { useGraphStore } from "@/lib/store";
 
@@ -13,10 +13,17 @@ type Props = {
   ids: string[];
 };
 
+function hasAny<T>(a: Set<T>, b: Set<T>): boolean {
+  for (const x of a) if (b.has(x)) return true;
+  return false;
+}
+
 const COLOR_DIM = new THREE.Color("#3a2c0e");
 const COLOR_BASE = new THREE.Color("#b8902a");
 const COLOR_NEIGHBOR = new THREE.Color("#e8c14a");
 const COLOR_FOCUS = new THREE.Color("#fff1b8");
+
+const HIDDEN_MATRIX = new THREE.Matrix4().makeScale(0, 0, 0);
 
 export function Nodes({ graph, layout, ids }: Props) {
   const meshRef = useRef<THREE.InstancedMesh>(null);
@@ -34,37 +41,81 @@ export function Nodes({ graph, layout, ids }: Props) {
     });
   }, [ids, graph]);
 
-  // Initial positions, colors, scales.
+  // For each node, the set of categories present on its edges. Used by the
+  // lens: a node "passes" if it carries any thread in the active set.
+  const nodeCategories = useMemo<Set<Category>[]>(() => {
+    return ids.map((id) => {
+      const set = new Set<Category>();
+      for (const ei of graph.nodes[id]?.e ?? []) {
+        set.add(graph.edges[ei].pc);
+      }
+      return set;
+    });
+  }, [ids, graph]);
+
+  // Rewrite per-instance matrices based on the current lens + selection.
+  // Hidden = scale 0, which both removes the visual and disables picking.
+  // The focused node is always kept visible, even if the lens would hide it.
   useEffect(() => {
+    const apply = () => {
+      const mesh = meshRef.current;
+      const halo = haloRef.current;
+      if (!mesh || !halo) return;
+      const { activeCategories, selectedNode } = useGraphStore.getState();
+      const hasFilter = activeCategories.size > 0;
+      const dummy = new THREE.Object3D();
+
+      for (let i = 0; i < ids.length; i++) {
+        const id = ids[i];
+        const passesLens = !hasFilter || hasAny(nodeCategories[i], activeCategories);
+        const visible = passesLens || id === selectedNode;
+
+        if (!visible) {
+          mesh.setMatrixAt(i, HIDDEN_MATRIX);
+          halo.setMatrixAt(i, HIDDEN_MATRIX);
+          continue;
+        }
+
+        const p = layout.positions[id];
+        dummy.position.set(p.x, p.y, p.z);
+        const s = baseScales[i];
+        dummy.scale.setScalar(s);
+        dummy.updateMatrix();
+        mesh.setMatrixAt(i, dummy.matrix);
+
+        dummy.scale.setScalar(s * 3.8);
+        dummy.updateMatrix();
+        halo.setMatrixAt(i, dummy.matrix);
+      }
+      mesh.instanceMatrix.needsUpdate = true;
+      halo.instanceMatrix.needsUpdate = true;
+    };
+
+    // Initial paint — also seed colors so meshStandardMaterial has instanceColor.
+    apply();
     const mesh = meshRef.current;
     const halo = haloRef.current;
-    if (!mesh || !halo) return;
-    const dummy = new THREE.Object3D();
-    const color = COLOR_BASE.clone();
+    if (mesh && halo) {
+      for (let i = 0; i < ids.length; i++) {
+        mesh.setColorAt(i, COLOR_BASE);
+        halo.setColorAt(i, COLOR_BASE);
+      }
+      if (mesh.instanceColor) mesh.instanceColor.needsUpdate = true;
+      if (halo.instanceColor) halo.instanceColor.needsUpdate = true;
+    }
 
-    ids.forEach((id, i) => {
-      const p = layout.positions[id];
-      dummy.position.set(p.x, p.y, p.z);
-      const s = baseScales[i];
-      dummy.scale.setScalar(s);
-      dummy.updateMatrix();
-      mesh.setMatrixAt(i, dummy.matrix);
-
-      // Halo is a larger billboarded sphere at the same position.
-      dummy.scale.setScalar(s * 3.8);
-      dummy.updateMatrix();
-      halo.setMatrixAt(i, dummy.matrix);
-
-      mesh.setColorAt(i, color);
-      halo.setColorAt(i, color);
+    return useGraphStore.subscribe((state, prev) => {
+      if (
+        state.activeCategories !== prev.activeCategories ||
+        state.selectedNode !== prev.selectedNode
+      ) {
+        apply();
+      }
     });
-    mesh.instanceMatrix.needsUpdate = true;
-    halo.instanceMatrix.needsUpdate = true;
-    if (mesh.instanceColor) mesh.instanceColor.needsUpdate = true;
-    if (halo.instanceColor) halo.instanceColor.needsUpdate = true;
-  }, [ids, layout, baseScales]);
+  }, [ids, layout, baseScales, nodeCategories]);
 
   // Color updates driven by hover / selection — done outside React render.
+  // Hidden instances still get color writes (cheap) but are invisible anyway.
   useFrame(() => {
     const mesh = meshRef.current;
     const halo = haloRef.current;
@@ -85,8 +136,8 @@ export function Nodes({ graph, layout, ids }: Props) {
     for (let i = 0; i < ids.length; i++) {
       const id = ids[i];
       let target: THREE.Color;
-      if (!focus) target = COLOR_BASE;
-      else if (id === focus) target = COLOR_FOCUS;
+      if (id === focus) target = COLOR_FOCUS;
+      else if (!focus) target = COLOR_BASE;
       else if (neighbors.has(id)) target = COLOR_NEIGHBOR;
       else target = COLOR_DIM;
 
