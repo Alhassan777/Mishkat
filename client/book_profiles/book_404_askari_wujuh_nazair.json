@@ -1,0 +1,46 @@
+{
+  "organization_type": "alphabetical_by_term",
+  "entry_delimiter": "### ‌",
+  "verse_citation_format": "text_in_braces",
+  "resolution_markers": [
+    "أي:",
+    "ومعناه:",
+    "والمراد أن:",
+    "قلت:",
+    "والصحيح أنه أراد:"
+  ],
+  "entry_count_estimate": 200,
+  "primary_categories": [
+    2,
+    1,
+    5
+  ],
+  "extraction_difficulty": "easy",
+  "muqaddimah_summary": "يهدف الكتاب إلى جمع وتصنيف \"الوجوه والنظائر\" في القرآن الكريم، بناءً على طلب من طالع الكتب المصنفة في هذا الفن ووجد فيها تأويلات تتفق مع أصول أهل الحق (المعتزلة). يسعى المؤلف إلى إيراد كل نوع من هذه المعاني على وجهه الصحيح، وتمييز ما يدخل بعضه في بعض، وجمع المتفرق منها في كتاب واحد لتسهيل استخراج المطلوب عند الحاجة، مع إضافة ما لم تتكلم فيه السلف. يعتمد المؤلف منهجًا يقوم على نفي اللبس عن المعاني، وبيان الصواب فيها، وتمييز وجوهها تمييزًا دقيقًا، وتقسيم الأبواب بشكل منهجي. كما يذكر أصل كل كلمة واشتقاقها في العربية لزيادة الفائدة. ينظم الكتاب على نسق حروف المعجم، مبتدئًا بما كان في أوله ألف، ثم باء، وهكذا إلى آخر الحروف، لتيسير الوصول إلى المطلوب.",
+  "methodology_note": "The author's methodology involves identifying a Quranic word/concept, detailing its etymological origin, and then systematically enumerating its various semantic applications (\"وجوه\") within the Quran, supported by specific verse citations and linguistic analysis.",
+  "numbering_convention": "unknown",
+  "has_mnemonic_content": false,
+  "example_entries": [
+    "‌السلام",
+    "قد مضى القول في أصل هذا الحرف، وهو في القرآن على ستة أوجه:",
+    "الأول: اسم اللَّه تعالى، قال: (السَّلَامُ الْمُؤْمِنُ الْمُهَيْمِنُ) ومعناه أن عباده يسلمون من ظلمه، وقال: (سُبُلَ السَّلَامِ) أي: سبل الله، وهو دينه، وقال: (يَدْعُو إِلَى دَارِ السَّلَامِ) يعني: الجنة، ونسبها إلى نفسه تعظيما لها، كما يقال: بيت الله وخليفة اللَّه، ويجوز أن يكون أراد بالسلام الأمن من الخوف، لأن موضوع السلام لذلك."
+  ],
+  "question_markers": [
+    "فإن قيل:"
+  ],
+  "multi_entry_window": true,
+  "profiler_notes": null,
+  "_meta": {
+    "slug": "book_404_askari_wujuh_nazair",
+    "tier": "tier1_poc_core",
+    "shamela_id": 37586,
+    "book_title": "الوجوه والنظائر لأبي هلال العسكري - معتزلي",
+    "author": "أبو هلال الحسن بن عبد الله بن سهل بن سعيد بن يحيى بن مهران العسكري(ت نحو 395هـ)",
+    "page_count": "512",
+    "source_md": "الوجوه والنظائر.md",
+    "profiled_at": "2026-05-17T13:30:55.997755+00:00",
+    "model": "gemini-2.5-flash",
+    "tokens_in": 16886,
+    "tokens_out": 664
+  }
+}

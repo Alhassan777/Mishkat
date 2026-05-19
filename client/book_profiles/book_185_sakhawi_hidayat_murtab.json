@@ -1,0 +1,37 @@
+{
+  "organization_type": "alphabetical_by_term",
+  "entry_delimiter": "### ‌",
+  "verse_citation_format": "text_in_braces_named",
+  "resolution_markers": [],
+  "entry_count_estimate": 194,
+  "primary_categories": [
+    1,
+    2,
+    5
+  ],
+  "extraction_difficulty": "easy",
+  "muqaddimah_summary": null,
+  "methodology_note": "The author's methodology is to present mutashabihat (similarities) in a poetic, mnemonic format. Each entry identifies a specific word or phrase and then enumerates its occurrences across different surahs, often highlighting variations or specific contexts, primarily for memorization.",
+  "numbering_convention": "unknown",
+  "has_mnemonic_content": true,
+  "example_entries": [
+    "203 - (وَرَبُّكَ الْغَنِيُّ) فِي الأنْعَامِ ... (ذُو الرَّحْمَةِ) الْبَاقِي عَلَى الدَّوَامِ",
+    "204 - (وَأَهْلُهَا) يَا صَاحِ (غَافِلُونَا) ... فِيهَا وَقُلْ فِي هُودِ (مُصْلِحُونَا)"
+  ],
+  "question_markers": [],
+  "multi_entry_window": true,
+  "profiler_notes": "The book is entirely a poetic composition (nazm) designed for memorization, not prose. Entries are identified by headings or the word/phrase itself, followed by poetic lines explaining the mutashabihat. No explicit Quranic verse numbers are provided, only surah names and relative positions.",
+  "_meta": {
+    "slug": "book_185_sakhawi_hidayat_murtab",
+    "tier": "future_expansion",
+    "shamela_id": 9831,
+    "book_title": "هداية المرتاب وغاية الحفاظ والطلاب في تبيين متشابه الكتاب",
+    "author": "علي بن محمد بن عبد الصمد الهمداني المصري الشافعي،أبو الحسن،علم الدين السخاوي(ت 643هـ)",
+    "page_count": "175",
+    "source_md": "هداية المرتاب وغاية الحفاظ والطلاب.md",
+    "profiled_at": "2026-05-17T14:49:10.742587+00:00",
+    "model": "gemini-2.5-flash",
+    "tokens_in": 8920,
+    "tokens_out": 403
+  }
+}
