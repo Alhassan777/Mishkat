@@ -43,17 +43,24 @@ def main() -> None:
         return book_ids[key]
 
     # Slim nodes — keep references only; full text deduped.
+    # Drop placeholder nodes whose surah name is missing — these are stub
+    # references to nonexistent āyāt (e.g. source data mentioning 32:50 when
+    # Sūrah As-Sajdah only has 30 āyāt) and can't be meaningfully rendered.
     slim_nodes: dict[str, dict] = {}
+    skipped_placeholder = 0
     for nid, n in raw_nodes.items():
+        if not n.get("surah_name_en") and not n.get("surah_name_ar"):
+            skipped_placeholder += 1
+            continue
         slim_nodes[nid] = {
             "s": n["surah"],
             "a": n["ayah"],
-            "sn": n.get("surah_name_en", ""),
-            "sna": n.get("surah_name_ar", ""),
-            "t": n.get("text_uthmani", ""),
-            "j": n.get("juz", 0),
-            "hq": n.get("hizb_quarter", 0),
-            "n": n.get("ayah_no_quran", 0),
+            "sn": n.get("surah_name_en") or "",
+            "sna": n.get("surah_name_ar") or "",
+            "t": n.get("text_uthmani") or "",
+            "j": n.get("juz") or 0,
+            "hq": n.get("hizb_quarter") or 0,
+            "n": n.get("ayah_no_quran") or 0,
         }
 
     # Edges — undirected; dedupe by sorted pair.
@@ -67,9 +74,13 @@ def main() -> None:
     duplicate_opinions_dropped = 0
 
     for src, n in raw_nodes.items():
+        if src not in slim_nodes:
+            continue
         for tgt, conn in n.get("connections", {}).items():
             if src == tgt:
                 self_loops_dropped += 1
+                continue
+            if tgt not in slim_nodes:
                 continue
             key = "|".join(sorted([src, tgt]))
             if key in seen:
@@ -145,7 +156,7 @@ def main() -> None:
     size_mb = OUT.stat().st_size / (1024 * 1024)
     print(f"Wrote {OUT}")
     print(f"  nodes={len(slim_nodes)} edges={len(edges)} books={len(books)}")
-    print(f"  dropped: {self_loops_dropped} self-loops, {duplicate_opinions_dropped} duplicate opinions")
+    print(f"  dropped: {skipped_placeholder} placeholder nodes, {self_loops_dropped} self-loops, {duplicate_opinions_dropped} duplicate opinions")
     print(f"  size={size_mb:.2f} MB")
 
 

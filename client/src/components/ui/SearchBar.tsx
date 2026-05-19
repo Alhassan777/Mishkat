@@ -122,7 +122,7 @@ function searchNodes(graph: GraphData, q: string): string[] {
   }
   const out: string[] = [];
   for (const [id, n] of Object.entries(graph.nodes)) {
-    const hay = `${n.sn.toLowerCase()} ${n.sna} ${n.t}`;
+    const hay = `${(n.sn ?? "").toLowerCase()} ${n.sna ?? ""} ${n.t ?? ""}`;
     if (hay.includes(query) || hay.includes(q)) out.push(id);
     if (out.length >= 40) break;
   }
