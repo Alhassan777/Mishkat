@@ -7,7 +7,6 @@ import { useVerse } from "@/lib/quran/useVerse";
 import { WordTokens } from "@/components/quran/WordTokens";
 import { TranslationLine } from "@/components/quran/TranslationLine";
 import { AudioButton } from "@/components/quran/AudioButton";
-import { PairAudioButton } from "@/components/quran/PairAudioButton";
 import { TafsirPanel } from "@/components/quran/TafsirPanel";
 import { diffWordSets } from "@/components/quran/diff";
 import { SaveAyahButton } from "@/components/ui/SaveAyahButton";
@@ -229,14 +228,11 @@ function ComparisonView({
       />
 
       <div className="thin-scroll flex-1 overflow-y-auto px-7 pb-12">
-        <div className="mt-2 flex items-center justify-between gap-3">
-          <div className="flex items-center gap-3">
-            <CategoryChip cat={edge.pc} />
-            <span className="font-sans text-[10.5px] uppercase tracking-[0.24em] text-text-faint">
-              {edge.ops.length} reading{edge.ops.length === 1 ? "" : "s"}
-            </span>
-          </div>
-          <PairAudioButton urlA={verseA?.audio?.url} urlB={verseB?.audio?.url} />
+        <div className="mt-2 flex items-center gap-3">
+          <CategoryChip cat={edge.pc} />
+          <span className="font-sans text-[10.5px] uppercase tracking-[0.24em] text-text-faint">
+            {edge.ops.length} reading{edge.ops.length === 1 ? "" : "s"}
+          </span>
         </div>
 
         <AyahCard side="A" node={a} verse={verseA} diffMask={maskA} />

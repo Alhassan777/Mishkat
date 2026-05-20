@@ -1,46 +1,25 @@
 "use client";
 
-import { useGraphStore } from "@/lib/store";
 import { SettingsPopover } from "./SettingsPopover";
 import { SignInWidget } from "@/components/auth/SignInWidget";
 
 export function Header() {
-  const graph = useGraphStore((s) => s.graph);
   return (
     <header className="pointer-events-none absolute inset-x-0 top-0 z-30 flex items-start justify-between px-8 pt-7">
       <div className="pointer-events-auto flex items-center gap-3">
         <Mark />
         <div className="leading-tight">
-          <div className="font-quran text-[22px] text-ink-bright tracking-wide" dir="rtl">
-            آيات
-          </div>
-          <div className="font-sans text-[10.5px] uppercase tracking-[0.32em] text-text-faint">
-            The Infinite Ink
+          <div className="font-sans text-[11px] font-semibold uppercase tracking-[0.32em] text-text">
+            Mutashābihāt Visualizer
           </div>
         </div>
       </div>
 
       <div className="pointer-events-auto flex items-center gap-6 text-[11px] uppercase tracking-[0.28em] text-text-faint">
-        {graph && (
-          <>
-            <Stat label="Āyāt" value={graph.meta.nodes.toLocaleString()} />
-            <Stat label="Threads" value={graph.meta.edges.toLocaleString()} />
-            <Stat label="Scholars" value={graph.meta.books.toString()} />
-          </>
-        )}
         <SignInWidget />
         <SettingsPopover />
       </div>
     </header>
-  );
-}
-
-function Stat({ label, value }: { label: string; value: string }) {
-  return (
-    <div className="flex flex-col items-end">
-      <span className="font-sans text-[15px] tracking-normal text-text">{value}</span>
-      <span className="mt-0.5">{label}</span>
-    </div>
   );
 }
 

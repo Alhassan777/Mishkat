@@ -183,19 +183,161 @@ function Picker({
       <div className="mb-1 font-sans text-[10.5px] uppercase tracking-[0.28em] text-text-faint">
         {label}
       </div>
-      <select
-        value={value}
-        onChange={(e) => onChange(Number(e.target.value))}
-        className="w-full rounded-md border border-hairline bg-surface/60 px-3 py-2 font-sans text-[12.5px] text-text outline-none focus:border-hairline-strong"
-      >
-        {options.length === 0 && <option value={value}>—</option>}
-        {options.map((o) => (
-          <option key={o.id} value={o.id} className="bg-ocean-deep">
-            {o.label}
-          </option>
-        ))}
-      </select>
+      <CustomSelect options={options} value={value} onChange={onChange} />
     </div>
+  );
+}
+
+function CustomSelect({
+  options,
+  value,
+  onChange,
+}: {
+  options: { id: number; label: string }[];
+  value: number;
+  onChange: (v: number) => void;
+}) {
+  const [open, setOpen] = useState(false);
+  const [activeIdx, setActiveIdx] = useState(-1);
+  const wrapRef = useRef<HTMLDivElement>(null);
+  const listRef = useRef<HTMLUListElement>(null);
+  const selected = options.find((o) => o.id === value);
+
+  useEffect(() => {
+    if (!open) return;
+    const onDown = (e: MouseEvent) => {
+      if (!wrapRef.current?.contains(e.target as Node)) setOpen(false);
+    };
+    document.addEventListener("mousedown", onDown);
+    return () => document.removeEventListener("mousedown", onDown);
+  }, [open]);
+
+  useEffect(() => {
+    if (!open) return;
+    setActiveIdx(Math.max(0, options.findIndex((o) => o.id === value)));
+  }, [open, options, value]);
+
+  useEffect(() => {
+    if (!open || activeIdx < 0) return;
+    const el = listRef.current?.children[activeIdx] as HTMLElement | undefined;
+    el?.scrollIntoView({ block: "nearest" });
+  }, [open, activeIdx]);
+
+  const onKey = (e: React.KeyboardEvent) => {
+    if (e.key === "Escape") {
+      setOpen(false);
+      return;
+    }
+    if (!open && (e.key === "Enter" || e.key === " " || e.key === "ArrowDown")) {
+      e.preventDefault();
+      setOpen(true);
+      return;
+    }
+    if (!open) return;
+    if (e.key === "ArrowDown") {
+      e.preventDefault();
+      setActiveIdx((i) => Math.min(options.length - 1, i + 1));
+    } else if (e.key === "ArrowUp") {
+      e.preventDefault();
+      setActiveIdx((i) => Math.max(0, i - 1));
+    } else if (e.key === "Enter") {
+      e.preventDefault();
+      const opt = options[activeIdx];
+      if (opt) {
+        onChange(opt.id);
+        setOpen(false);
+      }
+    }
+  };
+
+  return (
+    <div ref={wrapRef} className="relative" onKeyDown={onKey}>
+      <button
+        type="button"
+        onClick={() => setOpen((v) => !v)}
+        aria-haspopup="listbox"
+        aria-expanded={open}
+        className={`flex w-full items-center justify-between gap-2 rounded-md border bg-surface/60 px-3 py-1.5 text-left font-sans text-[11px] text-text outline-none transition ${
+          open
+            ? "border-hairline-strong shadow-[0_0_0_1px_rgba(212,175,55,0.18)]"
+            : "border-hairline hover:border-hairline-strong"
+        }`}
+      >
+        <span className={`truncate ${selected ? "text-text" : "text-text-faint"}`}>
+          {selected?.label ?? "—"}
+        </span>
+        <Chevron open={open} />
+      </button>
+
+      {open && (
+        <div className="absolute left-0 right-0 top-[calc(100%+6px)] z-50 overflow-hidden rounded-md border border-hairline-strong bg-ocean-deep/95 shadow-[0_18px_44px_-12px_rgba(0,0,0,0.7)] backdrop-blur-xl rise">
+          <ul
+            ref={listRef}
+            role="listbox"
+            className="thin-scroll max-h-56 overflow-y-auto py-1"
+          >
+            {options.length === 0 && (
+              <li className="px-3 py-1.5 font-sans text-[11px] text-text-faint">
+                No options
+              </li>
+            )}
+            {options.map((o, i) => {
+              const isSelected = o.id === value;
+              const isActive = i === activeIdx;
+              return (
+                <li
+                  key={o.id}
+                  role="option"
+                  aria-selected={isSelected}
+                  onMouseEnter={() => setActiveIdx(i)}
+                  onMouseDown={(e) => e.preventDefault()}
+                  onClick={() => {
+                    onChange(o.id);
+                    setOpen(false);
+                  }}
+                  className={`flex cursor-pointer items-center justify-between gap-2 px-3 py-1.5 font-sans text-[11px] transition ${
+                    isActive ? "bg-ink/[0.10]" : ""
+                  } ${isSelected ? "text-ink-bright" : "text-text"}`}
+                >
+                  <span className="truncate">{o.label}</span>
+                  {isSelected && (
+                    <svg width="11" height="11" viewBox="0 0 12 12" fill="none">
+                      <path
+                        d="M2.5 6.2l2.4 2.4L9.5 3.5"
+                        stroke="currentColor"
+                        strokeWidth="1.6"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  )}
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function Chevron({ open }: { open: boolean }) {
+  return (
+    <svg
+      width="10"
+      height="10"
+      viewBox="0 0 12 12"
+      fill="none"
+      className={`shrink-0 text-text-faint transition-transform ${open ? "rotate-180" : ""}`}
+    >
+      <path
+        d="M3 4.5l3 3 3-3"
+        stroke="currentColor"
+        strokeWidth="1.6"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
   );
 }
 

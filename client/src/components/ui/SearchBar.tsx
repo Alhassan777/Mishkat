@@ -41,7 +41,7 @@ export function SearchBar() {
       >
         <SearchIcon />
         <span className="font-sans text-[12.5px] text-text-muted">
-          Search · <span className="text-text-faint">2:255 · al-baqarah · ٱلرَّحْمَٰن</span>
+          Search · <span className="text-text-faint">2:255 · al-baqarah</span>
         </span>
         <kbd className="rounded border border-hairline px-1.5 py-0.5 font-sans text-[10px] tracking-wider text-text-faint">
           ⌘K
@@ -54,7 +54,15 @@ export function SearchBar() {
           onClick={() => setOpen(false)}
         >
           <div
-            className="w-[min(560px,92vw)] overflow-hidden rounded-2xl border border-hairline-strong bg-surface/90 shadow-[0_40px_120px_-20px_rgba(0,0,0,0.6)] rise"
+            className="flex flex-col overflow-hidden rounded-2xl border border-hairline-strong bg-surface/90 shadow-[0_40px_120px_-20px_rgba(0,0,0,0.6)] rise resize"
+            style={{
+              width: "min(560px, 92vw)",
+              height: "min(60vh, 640px)",
+              minWidth: "320px",
+              minHeight: "200px",
+              maxWidth: "96vw",
+              maxHeight: "86vh",
+            }}
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-center gap-3 border-b border-hairline px-5 py-4">
@@ -63,14 +71,19 @@ export function SearchBar() {
                 ref={inputRef}
                 value={q}
                 onChange={(e) => setQ(e.target.value)}
-                placeholder="Reference (2:255), surah, or any Arabic phrase — diacritics ignored"
-                className="flex-1 bg-transparent font-sans text-[15px] text-text placeholder:text-text-faint focus:outline-none"
+                placeholder="Reference (2:255), surah, or any Arabic phrase"
+                dir="auto"
+                className={`flex-1 bg-transparent leading-[1.4] text-text placeholder:text-text-faint placeholder:font-sans placeholder:text-[14px] focus:outline-none ${
+                  /[؀-ۿݐ-ݿࢠ-ࣿﭐ-﷿ﹰ-﻿]/.test(q)
+                    ? "font-quran text-[22px]"
+                    : "font-sans text-[16px]"
+                }`}
               />
               <span className="font-sans text-[10.5px] uppercase tracking-[0.24em] text-text-faint">
                 Esc
               </span>
             </div>
-            <div className="max-h-[52vh] overflow-y-auto thin-scroll">
+            <div className="flex-1 overflow-y-auto thin-scroll">
               {results.length === 0 && q && (
                 <div className="px-5 py-8 text-center font-sans text-[13px] text-text-faint">
                   No āyah matched. Try a reference like <em>4:56</em>.
@@ -86,15 +99,15 @@ export function SearchBar() {
                       setOpen(false);
                       setQ("");
                     }}
-                    className="flex w-full items-center gap-4 border-t border-hairline px-5 py-3 text-left transition hover:bg-ink/[0.06]"
+                    className="flex w-full items-start gap-4 border-t border-hairline px-5 py-3 text-left transition hover:bg-ink/[0.06]"
                   >
-                    <span className="w-12 font-sans text-[12px] tracking-wider text-ink">
+                    <span className="w-12 shrink-0 pt-1 font-sans text-[12px] tracking-wider text-ink">
                       {node.s}:{node.a}
                     </span>
-                    <span className="line-clamp-2 flex-1 font-quran text-[19px] leading-[1.6] text-text" dir="rtl">
+                    <span className="flex-1 text-right font-quran text-[19px] leading-[1.6] text-text" dir="rtl">
                       <Highlight text={node.t} tokens={hitTokens} />
                     </span>
-                    <span className="font-sans text-[11px] text-text-faint whitespace-nowrap">
+                    <span className="shrink-0 pt-1 font-sans text-[11px] text-text-faint whitespace-nowrap">
                       <Highlight text={node.sn} tokens={hitTokens} />
                     </span>
                   </button>

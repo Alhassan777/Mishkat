@@ -23,7 +23,7 @@ export function FilterRail() {
 
   return (
     <div className="pointer-events-none absolute inset-x-0 bottom-7 z-30 flex flex-col items-center gap-3">
-      <div className="font-sans text-[10.5px] uppercase tracking-[0.32em] text-text-faint">
+      <div className="font-sans text-[10.5px] font-bold uppercase tracking-[0.32em] text-text-faint">
         {hint}
       </div>
       <div className="hairline w-40 opacity-60" />

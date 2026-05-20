@@ -287,6 +287,7 @@ export function Scene({ graph }: { graph: GraphData }) {
         showNavInfo={false}
         controlType="orbit"
         rendererConfig={{ antialias: true, powerPreference: "high-performance" }}
+        showPointerCursor={false}
         onNodeHover={(node) => {
           const id = (node as FGNode | null)?.id ?? null;
           if (useGraphStore.getState().hoveredNode !== id) setHovered(id);
