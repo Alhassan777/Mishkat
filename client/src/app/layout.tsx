@@ -23,9 +23,9 @@ const readexArabic = Readex_Pro({
 });
 
 export const metadata: Metadata = {
-  title: "Mishkāt — Mutashābihāt Visualizer",
+  title: "Mishkāt · مِشكاة — Qur'ānic Verse Connections",
   description:
-    "Mishkāt is a 3D mutashābihāt visualizer that maps verse-to-verse connections from classical scholarship into an interactive Qur'ānic graph.",
+    "Mishkāt (مِشكاة): a poetic 3D visualization of the connections between the verses of the Qur'ān, drawn from thirteen classical works on mutashābihāt, wujūh, and naẓāʾir.",
 };
 
 export default function RootLayout({

@@ -13,13 +13,22 @@ export function Header() {
         <Mark />
         <div className="leading-tight">
           <div
-            className={`font-semibold uppercase text-text ${
+            className={`font-semibold text-text ${
               t.isRTL
-                ? "font-arabic text-[15px] tracking-[0.12em]"
-                : "font-sans text-[11px] tracking-[0.32em]"
+                ? "font-arabic text-[18px] tracking-[0.04em]"
+                : "font-sans text-[14px] tracking-[0.14em]"
             }`}
           >
             {t.brand}
+          </div>
+          <div
+            className={`mt-0.5 uppercase text-text-faint ${
+              t.isRTL
+                ? "font-arabic text-[10px] tracking-[0.16em]"
+                : "font-sans text-[9px] tracking-[0.32em]"
+            }`}
+          >
+            {t.brandTagline}
           </div>
         </div>
       </div>
