@@ -73,7 +73,7 @@ type Dict = {
 };
 
 const en: Dict = {
-  brand: "Mutashābihāt Visualizer",
+  brand: "Mishkāt — Mutashābihāt Visualizer",
   searchHint: "Search",
   searchExample: "2:255 · al-baqarah",
   searchPlaceholder: "Reference (2:255), surah, or any Arabic phrase",
@@ -148,7 +148,7 @@ const en: Dict = {
 };
 
 const ar: Dict = {
-  brand: "مُتشابهات القرآن",
+  brand: "مشكاة — مُتشابهات القرآن",
   searchHint: "ابحث",
   searchExample: "٢:٢٥٥ · البقرة",
   searchPlaceholder: "مرجع (٢:٢٥٥)، سورة، أو أي عبارة عربية",

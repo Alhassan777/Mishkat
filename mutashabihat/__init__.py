@@ -1,2 +1,0 @@
-"""Mutashabihat extraction package."""
-

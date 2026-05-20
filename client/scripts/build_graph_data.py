@@ -11,7 +11,7 @@ import os
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-SRC = ROOT / "ayah_graph.json"
+SRC = ROOT.parent / "data" / "graph" / "ayah_graph.json"
 OUT = ROOT / "public" / "data" / "graph.json"
 
 

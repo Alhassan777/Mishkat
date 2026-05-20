@@ -1,0 +1,2157 @@
+{
+  "$defs": {
+    "ApparentContradiction": {
+      "properties": {
+        "claim_a": {
+          "$ref": "#/$defs/ClaimSurface"
+        },
+        "claim_b": {
+          "$ref": "#/$defs/ClaimSurface"
+        },
+        "tension_ar": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Tension Ar"
+        },
+        "tension_en": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Tension En"
+        }
+      },
+      "title": "ApparentContradiction",
+      "type": "object"
+    },
+    "AutoFilledVerseData": {
+      "properties": {
+        "surah_name_ar": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Surah Name Ar"
+        },
+        "surah_name_en": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Surah Name En"
+        },
+        "text_uthmani_full": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Text Uthmani Full"
+        },
+        "juz": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Juz"
+        },
+        "hizb_quarter": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Hizb Quarter"
+        },
+        "ayah_no_quran": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Ayah No Quran"
+        },
+        "verification_score": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Verification Score"
+        }
+      },
+      "title": "AutoFilledVerseData",
+      "type": "object"
+    },
+    "BalaghahInfo": {
+      "properties": {
+        "device_type": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Device Type"
+        },
+        "classical_term_ar": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Classical Term Ar"
+        },
+        "direction": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Direction"
+        },
+        "rhetorical_purpose_ar": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Rhetorical Purpose Ar"
+        },
+        "rhetorical_purpose_en": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Rhetorical Purpose En"
+        },
+        "affects_meaning": {
+          "default": false,
+          "title": "Affects Meaning",
+          "type": "boolean"
+        }
+      },
+      "title": "BalaghahInfo",
+      "type": "object"
+    },
+    "ClaimSurface": {
+      "properties": {
+        "ref": {
+          "default": "",
+          "title": "Ref",
+          "type": "string"
+        },
+        "text_segment": {
+          "default": "",
+          "title": "Text Segment",
+          "type": "string"
+        },
+        "surface_reading_ar": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Surface Reading Ar"
+        },
+        "surface_reading_en": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Surface Reading En"
+        }
+      },
+      "title": "ClaimSurface",
+      "type": "object"
+    },
+    "CrossEpisodeAnalysis": {
+      "properties": {
+        "shared_elements": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Shared Elements",
+          "type": "array"
+        },
+        "varying_elements": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Varying Elements",
+          "type": "array"
+        },
+        "scholarly_note_ar": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Scholarly Note Ar"
+        },
+        "scholarly_note_en": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Scholarly Note En"
+        }
+      },
+      "title": "CrossEpisodeAnalysis",
+      "type": "object"
+    },
+    "CrossSurahRefrainPayload": {
+      "properties": {
+        "type": {
+          "const": "cross_surah_refrain",
+          "default": "cross_surah_refrain",
+          "title": "Type",
+          "type": "string"
+        },
+        "refrain_template": {
+          "default": "",
+          "title": "Refrain Template",
+          "type": "string"
+        },
+        "refrain_template_en": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Refrain Template En"
+        },
+        "occurrences": {
+          "items": {
+            "$ref": "#/$defs/RefrainOccurrence"
+          },
+          "title": "Occurrences",
+          "type": "array"
+        },
+        "pattern_analysis_ar": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Pattern Analysis Ar"
+        },
+        "pattern_analysis_en": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Pattern Analysis En"
+        },
+        "total_occurrences_in_quran": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Total Occurrences In Quran"
+        },
+        "detection_method": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Detection Method"
+        }
+      },
+      "title": "CrossSurahRefrainPayload",
+      "type": "object"
+    },
+    "DoctrinalPayload": {
+      "properties": {
+        "type": {
+          "const": "doctrinal",
+          "default": "doctrinal",
+          "title": "Type",
+          "type": "string"
+        },
+        "theological_domain": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Theological Domain"
+        },
+        "theological_domain_ar": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Theological Domain Ar"
+        },
+        "apparent_contradiction": {
+          "$ref": "#/$defs/ApparentContradiction"
+        },
+        "reconciliation": {
+          "$ref": "#/$defs/Reconciliation"
+        },
+        "reconciliation_method_type": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Reconciliation Method Type"
+        },
+        "creedal_stakes": {
+          "anyOf": [
+            {
+              "enum": [
+                "high",
+                "medium",
+                "low"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Creedal Stakes"
+        }
+      },
+      "title": "DoctrinalPayload",
+      "type": "object"
+    },
+    "LexicalDifference": {
+      "properties": {
+        "position": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Position"
+        },
+        "in_primary": {
+          "default": "",
+          "title": "In Primary",
+          "type": "string"
+        },
+        "in_related": {
+          "default": "",
+          "title": "In Related",
+          "type": "string"
+        },
+        "difference_type": {
+          "default": "substitution",
+          "enum": [
+            "substitution",
+            "addition",
+            "deletion",
+            "reordering",
+            "vowel_change",
+            "particle_change"
+          ],
+          "title": "Difference Type",
+          "type": "string"
+        },
+        "roots_primary": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Roots Primary",
+          "type": "array"
+        },
+        "roots_related": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Roots Related",
+          "type": "array"
+        },
+        "same_root": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Same Root"
+        },
+        "morphological_note": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Morphological Note"
+        }
+      },
+      "title": "LexicalDifference",
+      "type": "object"
+    },
+    "LexicalPayload": {
+      "properties": {
+        "type": {
+          "const": "lexical",
+          "default": "lexical",
+          "title": "Type",
+          "type": "string"
+        },
+        "similarity_type": {
+          "default": "",
+          "title": "Similarity Type",
+          "type": "string"
+        },
+        "shared_segment": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/SharedSegment"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "differences": {
+          "items": {
+            "$ref": "#/$defs/LexicalDifference"
+          },
+          "title": "Differences",
+          "type": "array"
+        },
+        "confusion_level": {
+          "anyOf": [
+            {
+              "enum": [
+                "high",
+                "medium",
+                "low"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Confusion Level"
+        },
+        "confusion_note_ar": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Confusion Note Ar"
+        },
+        "confusion_note_en": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Confusion Note En"
+        },
+        "scholarly_explanation_ar": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Scholarly Explanation Ar"
+        },
+        "scholarly_explanation_en": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Scholarly Explanation En"
+        },
+        "mnemonic_hint": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Mnemonic Hint"
+        },
+        "mnemonic_hint_source": {
+          "anyOf": [
+            {
+              "enum": [
+                "extracted",
+                "llm_generated"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Mnemonic Hint Source"
+        }
+      },
+      "title": "LexicalPayload",
+      "type": "object"
+    },
+    "MeaningSense": {
+      "properties": {
+        "meaning_ar": {
+          "default": "",
+          "title": "Meaning Ar",
+          "type": "string"
+        },
+        "meaning_en": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Meaning En"
+        },
+        "verse_refs": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Verse Refs",
+          "type": "array"
+        },
+        "context_clue": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Context Clue"
+        },
+        "attributed_to": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Attributed To",
+          "type": "array"
+        }
+      },
+      "title": "MeaningSense",
+      "type": "object"
+    },
+    "NarrativeEpisode": {
+      "properties": {
+        "surah": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Surah"
+        },
+        "verse_range": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Verse Range"
+        },
+        "surah_name": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Surah Name"
+        },
+        "episode_focus": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Episode Focus"
+        },
+        "unique_details": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Unique Details",
+          "type": "array"
+        },
+        "unique_details_en": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Unique Details En",
+          "type": "array"
+        },
+        "narrative_purpose_ar": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Narrative Purpose Ar"
+        },
+        "narrative_purpose_en": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Narrative Purpose En"
+        },
+        "rhetorical_context": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Rhetorical Context"
+        }
+      },
+      "title": "NarrativeEpisode",
+      "type": "object"
+    },
+    "NarrativePayload": {
+      "properties": {
+        "type": {
+          "const": "narrative",
+          "default": "narrative",
+          "title": "Type",
+          "type": "string"
+        },
+        "story": {
+          "$ref": "#/$defs/StoryInfo"
+        },
+        "episodes": {
+          "items": {
+            "$ref": "#/$defs/NarrativeEpisode"
+          },
+          "title": "Episodes",
+          "type": "array"
+        },
+        "cross_episode_analysis": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/CrossEpisodeAnalysis"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "title": "NarrativePayload",
+      "type": "object"
+    },
+    "ParallelStructure": {
+      "properties": {
+        "pattern": {
+          "default": "",
+          "title": "Pattern",
+          "type": "string"
+        },
+        "other_examples": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Other Examples",
+          "type": "array"
+        }
+      },
+      "title": "ParallelStructure",
+      "type": "object"
+    },
+    "ParsingOption": {
+      "properties": {
+        "option": {
+          "default": "",
+          "title": "Option",
+          "type": "string"
+        },
+        "option_en": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Option En"
+        },
+        "meaning_impact": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Meaning Impact"
+        },
+        "grammatical_position": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Grammatical Position"
+        },
+        "governing_element": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Governing Element"
+        },
+        "case_ending": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Case Ending"
+        },
+        "proponents": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Proponents",
+          "type": "array"
+        }
+      },
+      "title": "ParsingOption",
+      "type": "object"
+    },
+    "PrimaryVerseRef": {
+      "properties": {
+        "surah": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Surah"
+        },
+        "ayah": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Ayah"
+        },
+        "text_snippet": {
+          "default": "",
+          "title": "Text Snippet",
+          "type": "string"
+        },
+        "_auto_filled": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/AutoFilledVerseData"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "title": "PrimaryVerseRef",
+      "type": "object"
+    },
+    "Reconciliation": {
+      "properties": {
+        "method": {
+          "default": "",
+          "title": "Method",
+          "type": "string"
+        },
+        "method_ar": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Method Ar"
+        },
+        "explanation_ar": {
+          "default": "",
+          "title": "Explanation Ar",
+          "type": "string"
+        },
+        "explanation_en": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Explanation En"
+        },
+        "supporting_evidence": {
+          "items": {
+            "$ref": "#/$defs/SupportingEvidence"
+          },
+          "title": "Supporting Evidence",
+          "type": "array"
+        },
+        "scholarly_positions": {
+          "items": {
+            "$ref": "#/$defs/ScholarlyPosition"
+          },
+          "title": "Scholarly Positions",
+          "type": "array"
+        }
+      },
+      "title": "Reconciliation",
+      "type": "object"
+    },
+    "RefrainOccurrence": {
+      "properties": {
+        "ref": {
+          "default": "",
+          "title": "Ref",
+          "type": "string"
+        },
+        "ending": {
+          "default": "",
+          "title": "Ending",
+          "type": "string"
+        },
+        "attributes": {
+          "anyOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "string"
+            }
+          ],
+          "title": "Attributes"
+        },
+        "attributes_en": {
+          "anyOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "string"
+            }
+          ],
+          "title": "Attributes En"
+        },
+        "context_ar": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Context Ar"
+        },
+        "context_en": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Context En"
+        },
+        "why_these_attributes_ar": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Why These Attributes Ar"
+        },
+        "why_these_attributes_en": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Why These Attributes En"
+        }
+      },
+      "title": "RefrainOccurrence",
+      "type": "object"
+    },
+    "RelatedVerseRef": {
+      "properties": {
+        "surah": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Surah"
+        },
+        "ayah": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Ayah"
+        },
+        "text_snippet": {
+          "default": "",
+          "title": "Text Snippet",
+          "type": "string"
+        },
+        "role": {
+          "default": "mutashabih",
+          "enum": [
+            "mutashabih",
+            "clarifying",
+            "supporting",
+            "contextual"
+          ],
+          "title": "Role",
+          "type": "string"
+        },
+        "role_inferred": {
+          "default": true,
+          "title": "Role Inferred",
+          "type": "boolean"
+        },
+        "relationship_direction": {
+          "default": "bidirectional",
+          "enum": [
+            "bidirectional",
+            "directed",
+            "group"
+          ],
+          "title": "Relationship Direction",
+          "type": "string"
+        },
+        "wajh_label": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Wajh Label"
+        },
+        "_auto_filled": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/AutoFilledVerseData"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "title": "RelatedVerseRef",
+      "type": "object"
+    },
+    "ScholarlyPosition": {
+      "properties": {
+        "position": {
+          "default": "",
+          "title": "Position",
+          "type": "string"
+        },
+        "stance": {
+          "default": "",
+          "title": "Stance",
+          "type": "string"
+        },
+        "key_scholars": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Key Scholars",
+          "type": "array"
+        }
+      },
+      "title": "ScholarlyPosition",
+      "type": "object"
+    },
+    "SemanticPayload": {
+      "properties": {
+        "type": {
+          "const": "semantic",
+          "default": "semantic",
+          "title": "Type",
+          "type": "string"
+        },
+        "semantic_direction": {
+          "default": "",
+          "title": "Semantic Direction",
+          "type": "string"
+        },
+        "is_wujuh": {
+          "default": false,
+          "title": "Is Wujuh",
+          "type": "boolean"
+        },
+        "target_word": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/TargetWord"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "nazair_terms": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Nazair Terms",
+          "type": "array"
+        },
+        "nazair_explanation_ar": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Nazair Explanation Ar"
+        },
+        "nazair_explanation_en": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Nazair Explanation En"
+        },
+        "disambiguation_method": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Disambiguation Method"
+        },
+        "disambiguation_explanation_ar": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Disambiguation Explanation Ar"
+        },
+        "disambiguation_explanation_en": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Disambiguation Explanation En"
+        },
+        "wujuh_count": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Wujuh Count"
+        },
+        "wujuh_count_by_scholar": {
+          "items": {
+            "additionalProperties": {
+              "type": "integer"
+            },
+            "type": "object"
+          },
+          "title": "Wujuh Count By Scholar",
+          "type": "array"
+        },
+        "source_classification": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Source Classification"
+        }
+      },
+      "title": "SemanticPayload",
+      "type": "object"
+    },
+    "SharedSegment": {
+      "properties": {
+        "text": {
+          "default": "",
+          "title": "Text",
+          "type": "string"
+        },
+        "word_count": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Word Count"
+        }
+      },
+      "title": "SharedSegment",
+      "type": "object"
+    },
+    "SourceInfo": {
+      "properties": {
+        "book_id": {
+          "default": "",
+          "title": "Book Id",
+          "type": "string"
+        },
+        "book_title_ar": {
+          "default": "",
+          "title": "Book Title Ar",
+          "type": "string"
+        },
+        "author_ar": {
+          "default": "",
+          "title": "Author Ar",
+          "type": "string"
+        },
+        "page_or_section": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Page Or Section"
+        },
+        "raw_text_snippet": {
+          "default": "",
+          "title": "Raw Text Snippet",
+          "type": "string"
+        }
+      },
+      "title": "SourceInfo",
+      "type": "object"
+    },
+    "StoryInfo": {
+      "properties": {
+        "label_ar": {
+          "default": "",
+          "title": "Label Ar",
+          "type": "string"
+        },
+        "label_en": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Label En"
+        },
+        "prophet": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Prophet"
+        },
+        "story_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Story Id"
+        },
+        "story_id_source": {
+          "anyOf": [
+            {
+              "enum": [
+                "extracted",
+                "llm_generated"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Story Id Source"
+        }
+      },
+      "title": "StoryInfo",
+      "type": "object"
+    },
+    "StructuralPayload": {
+      "properties": {
+        "type": {
+          "const": "structural",
+          "default": "structural",
+          "title": "Type",
+          "type": "string"
+        },
+        "structural_phenomenon": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Structural Phenomenon"
+        },
+        "verse_analyses": {
+          "items": {
+            "$ref": "#/$defs/StructuralVerseAnalysis"
+          },
+          "title": "Verse Analyses",
+          "type": "array"
+        },
+        "parallel_structures": {
+          "items": {
+            "$ref": "#/$defs/ParallelStructure"
+          },
+          "title": "Parallel Structures",
+          "type": "array"
+        },
+        "source_grammar_book": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Source Grammar Book"
+        },
+        "balaghah": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/BalaghahInfo"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "title": "StructuralPayload",
+      "type": "object"
+    },
+    "StructuralVerseAnalysis": {
+      "properties": {
+        "ref": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Ref"
+        },
+        "text_segment": {
+          "default": "",
+          "title": "Text Segment",
+          "type": "string"
+        },
+        "grammatical_issue_ar": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Grammatical Issue Ar"
+        },
+        "grammatical_issue_en": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Grammatical Issue En"
+        },
+        "parsing_options": {
+          "items": {
+            "$ref": "#/$defs/ParsingOption"
+          },
+          "title": "Parsing Options",
+          "type": "array"
+        },
+        "preferred_parsing": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Preferred Parsing"
+        },
+        "preferred_by": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Preferred By"
+        }
+      },
+      "title": "StructuralVerseAnalysis",
+      "type": "object"
+    },
+    "SupportingEvidence": {
+      "properties": {
+        "type": {
+          "default": "other",
+          "enum": [
+            "hadith",
+            "verse",
+            "athar",
+            "other"
+          ],
+          "title": "Type",
+          "type": "string"
+        },
+        "text": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Text"
+        },
+        "source": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Source"
+        },
+        "ref": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Ref"
+        },
+        "note": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Note"
+        }
+      },
+      "title": "SupportingEvidence",
+      "type": "object"
+    },
+    "TargetWord": {
+      "properties": {
+        "text": {
+          "default": "",
+          "title": "Text",
+          "type": "string"
+        },
+        "root": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Root"
+        },
+        "meanings": {
+          "items": {
+            "$ref": "#/$defs/MeaningSense"
+          },
+          "title": "Meanings",
+          "type": "array"
+        }
+      },
+      "title": "TargetWord",
+      "type": "object"
+    },
+    "ThematicPayload": {
+      "properties": {
+        "type": {
+          "const": "thematic",
+          "default": "thematic",
+          "title": "Type",
+          "type": "string"
+        },
+        "theme": {
+          "$ref": "#/$defs/ThemeInfo"
+        },
+        "verse_cluster": {
+          "items": {
+            "$ref": "#/$defs/ThematicVerseItem"
+          },
+          "title": "Verse Cluster",
+          "type": "array"
+        },
+        "synthesis_ar": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Synthesis Ar"
+        },
+        "synthesis_en": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Synthesis En"
+        },
+        "related_themes": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Related Themes",
+          "type": "array"
+        }
+      },
+      "title": "ThematicPayload",
+      "type": "object"
+    },
+    "ThematicVerseItem": {
+      "properties": {
+        "ref": {
+          "default": "",
+          "title": "Ref",
+          "type": "string"
+        },
+        "angle": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Angle"
+        },
+        "angle_ar": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Angle Ar"
+        },
+        "emphasis": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Emphasis"
+        }
+      },
+      "title": "ThematicVerseItem",
+      "type": "object"
+    },
+    "ThemeInfo": {
+      "properties": {
+        "label_ar": {
+          "default": "",
+          "title": "Label Ar",
+          "type": "string"
+        },
+        "label_en": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Label En"
+        },
+        "domain": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Domain"
+        },
+        "ontology_path": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Ontology Path",
+          "type": "array"
+        },
+        "ontology_path_source": {
+          "anyOf": [
+            {
+              "enum": [
+                "extracted",
+                "llm_generated"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Ontology Path Source"
+        }
+      },
+      "title": "ThemeInfo",
+      "type": "object"
+    },
+    "VerseBundle": {
+      "properties": {
+        "primary": {
+          "$ref": "#/$defs/PrimaryVerseRef"
+        },
+        "related": {
+          "items": {
+            "$ref": "#/$defs/RelatedVerseRef"
+          },
+          "title": "Related",
+          "type": "array"
+        }
+      },
+      "required": [
+        "primary"
+      ],
+      "title": "VerseBundle",
+      "type": "object"
+    }
+  },
+  "properties": {
+    "id": {
+      "title": "Id",
+      "type": "string"
+    },
+    "category": {
+      "enum": [
+        "lexical",
+        "semantic",
+        "thematic",
+        "narrative",
+        "structural",
+        "cross_surah_refrain",
+        "doctrinal"
+      ],
+      "title": "Category",
+      "type": "string"
+    },
+    "secondary_categories": {
+      "items": {
+        "enum": [
+          "lexical",
+          "semantic",
+          "thematic",
+          "narrative",
+          "structural",
+          "cross_surah_refrain",
+          "doctrinal"
+        ],
+        "type": "string"
+      },
+      "title": "Secondary Categories",
+      "type": "array"
+    },
+    "subcategory": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Subcategory"
+    },
+    "title_ar": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Title Ar"
+    },
+    "explanation_ar": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Explanation Ar"
+    },
+    "parent_discipline": {
+      "anyOf": [
+        {
+          "enum": [
+            "mutashabih_alfaz",
+            "mutashabih_maani",
+            "wujuh_nazair",
+            "mushkil_quran",
+            "modern_analysis"
+          ],
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Parent Discipline"
+    },
+    "pair_keys": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Pair Keys",
+      "type": "array"
+    },
+    "verse_pair_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Verse Pair Id"
+    },
+    "verses": {
+      "$ref": "#/$defs/VerseBundle"
+    },
+    "source": {
+      "$ref": "#/$defs/SourceInfo"
+    },
+    "summary_ar": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Summary Ar"
+    },
+    "summary_en": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Summary En"
+    },
+    "summary_en_source": {
+      "anyOf": [
+        {
+          "enum": [
+            "extracted",
+            "llm_generated"
+          ],
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Summary En Source"
+    },
+    "confidence": {
+      "anyOf": [
+        {
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Confidence"
+    },
+    "theological_notes": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Theological Notes",
+      "type": "array"
+    },
+    "extraction_model": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Extraction Model"
+    },
+    "extraction_date": {
+      "anyOf": [
+        {
+          "format": "date",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Extraction Date"
+    },
+    "human_verified": {
+      "default": false,
+      "title": "Human Verified",
+      "type": "boolean"
+    },
+    "fidelity_flags": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Fidelity Flags",
+      "type": "array"
+    },
+    "category_payload": {
+      "discriminator": {
+        "mapping": {
+          "cross_surah_refrain": "#/$defs/CrossSurahRefrainPayload",
+          "doctrinal": "#/$defs/DoctrinalPayload",
+          "lexical": "#/$defs/LexicalPayload",
+          "narrative": "#/$defs/NarrativePayload",
+          "semantic": "#/$defs/SemanticPayload",
+          "structural": "#/$defs/StructuralPayload",
+          "thematic": "#/$defs/ThematicPayload"
+        },
+        "propertyName": "type"
+      },
+      "oneOf": [
+        {
+          "$ref": "#/$defs/LexicalPayload"
+        },
+        {
+          "$ref": "#/$defs/SemanticPayload"
+        },
+        {
+          "$ref": "#/$defs/ThematicPayload"
+        },
+        {
+          "$ref": "#/$defs/NarrativePayload"
+        },
+        {
+          "$ref": "#/$defs/StructuralPayload"
+        },
+        {
+          "$ref": "#/$defs/CrossSurahRefrainPayload"
+        },
+        {
+          "$ref": "#/$defs/DoctrinalPayload"
+        }
+      ],
+      "title": "Category Payload"
+    }
+  },
+  "required": [
+    "id",
+    "category",
+    "verses",
+    "source",
+    "category_payload"
+  ],
+  "title": "MutashabihatRecord",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "Auto-generated from Python BaseRecord model. Do not edit manually — run `python -m pipeline.mutashabihat.generate_schema` to regenerate."
+}

@@ -1,115 +1,78 @@
-# Ayat Visualization
+# Mishkāt — Mutashābihāt Visualizer
 
-Pipeline + visualization tooling for extracting Mutashabihat relations from classical books, merging records, and building an ayah-level adjacency graph for frontend exploration.
+Mishkāt is a research-to-product pipeline that transforms classical mutashābihāt scholarship into an interactive 3D Qur'ānic verse graph.  
+It extracts structured relations from 14 source books, validates references, merges records, builds an adjacency graph, and serves it in a modern web experience.
 
-## What This Repo Contains
+## Why This Matters
 
-- Python extraction pipeline (`cli`, `mutashabihat`).
-- Book/run outputs under `output/`.
-- Merge utility: `merge_records.py`.
-- Ayah graph builder: `build_ayah_graph.py`.
-- Frontend app in `frontend/` for interactive graph exploration.
+Students and readers often struggle to navigate distributed mutashābihāt discussions across many classical books.  
+Mishkāt centralizes those discussions into searchable, explorable verse-to-verse links.
 
-## Prerequisites
+## What You Get
 
-- Windows + PowerShell.
-- Python 3.12 installed at:
-  - `C:\Users\ElhassanElboraey\AppData\Local\Programs\Python\Python312\python.exe`
-- Node.js + npm (for `frontend/`).
+- **Impact on Quran Engagement:** discover verse parallels through visual exploration and scholarly summaries.
+- **Product Quality:** responsive Next.js client with filtering, search, Arabic-first display, and Qur'an API enrichment.
+- **Technical Execution:** resumable extraction pipeline, typed record schema, merge logic, and graph build stage.
+- **Innovation:** open, structured mutashābihāt dataset assembled from multiple classical sources.
+- **Effective API Use:** integrated Quran Foundation APIs for verse content, tafsir, recitation, and auth features.
 
-## Environment Setup
+## Repository Layout
 
-1. Copy `.env.example` to `.env`.
-2. Set at least:
-   - `GEMINI_API_KEY`
-   - optionally `GEMINI_MODEL`, delay/retry values.
+- `pipeline/` — extraction and graph-building backend.
+- `client/` — web application.
+- `data/sources/` — source markdown books.
+- `data/graph/` — canonical graph artifact and schema notes.
+- `data/extracted/` — sample extracted records + schema.
+- `docs/` — architecture, data, pipeline, and API documentation.
 
-## Python Install
+## Quick Start
 
-Use this command pattern in PowerShell:
+### 1) Install Python dependencies
 
 ```powershell
 $py = "C:\Users\ElhassanElboraey\AppData\Local\Programs\Python\Python312\python.exe"
 & $py -m pip install -r requirements.txt
 ```
 
-## Core Workflows
+### 2) Configure environment
 
-### 1) Extract a single book
+1. Copy `.env.example` to `.env`.
+2. Set at least `GEMINI_API_KEY`.
 
-```powershell
-$py = "C:\Users\ElhassanElboraey\AppData\Local\Programs\Python\Python312\python.exe"
-& $py -u -m cli.extract --book book_22_iskafi_durra_tanzil --force --delay 2.0
-```
-
-Important flags (`cli/extract.py`):
-
-- `--book` (required)
-- `--source` (default source dir)
-- `--model`
-- `--limit`
-- `--force`
-- `--delay`
-- `--run-id`
-
-### 2) Run all configured books sequentially
+### 3) Run extraction for one book
 
 ```powershell
 $py = "C:\Users\ElhassanElboraey\AppData\Local\Programs\Python\Python312\python.exe"
-& $py -u run_all_books.py
+& $py -m pipeline.cli.extract --book book_22_iskafi_durra_tanzil --source data/sources --delay 2.0
 ```
 
-### 3) Merge per-book records (dedupe by `id`)
+### 4) Merge and build graph
 
 ```powershell
 $py = "C:\Users\ElhassanElboraey\AppData\Local\Programs\Python\Python312\python.exe"
-& $py merge_records.py
+& $py pipeline/scripts/merge_records.py
+& $py pipeline/scripts/build_ayah_graph.py
+& $py client/scripts/build_graph_data.py
 ```
 
-Output:
-
-- `output/merged/book_<slug>.jsonl`
-
-### 4) Build ayah adjacency graph
+### 5) Run frontend
 
 ```powershell
-$py = "C:\Users\ElhassanElboraey\AppData\Local\Programs\Python\Python312\python.exe"
-& $py build_ayah_graph.py
-```
-
-Output:
-
-- `output/ayah_graph.json`
-- `output/ayah_graph_README.md` (schema + frontend mapping details)
-
-## Output Structure
-
-- `output/book_<slug>/<run_id>/records.jsonl` - per-run extraction records.
-- `output/book_<slug>/<run_id>/run_log.json` - run progress/logging.
-- `output/book_<slug>/<run_id>/extraction_state.json` - resumable state.
-- `output/merged/*.jsonl` - latest deduplicated records per book.
-- `output/ayah_graph.json` - combined adjacency graph.
-
-## Frontend
-
-From `frontend/`:
-
-```powershell
+cd client
 npm install
 npm run dev
 ```
 
-Build and preview:
+## Documentation
 
-```powershell
-npm run build
-npm run preview
-```
+- `docs/DATA.md` — sources, schema, extraction iterations, limitations, applications.
+- `docs/PIPELINE.md` — pipeline flow and operational details.
+- `docs/API_INTEGRATION.md` — Quran Foundation API usage.
+- `data/README.md` — dataset card.
+- `pipeline/README.md` — backend operator guide.
+- `client/README.md` — frontend guide.
 
-For frontend schema/runtime notes, see `frontend/README.md`.
+## Team
 
-## Notes
-
-- Main extraction provider is configured through environment variables.
-- The merge step is intended after multiple runs/books complete.
-- The graph builder consumes `output/merged/*.jsonl`, not raw per-run files.
+- Team: Threadwork
+- Product: Mishkāt — Mutashābihāt Visualizer
