@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { useT } from "@/lib/i18n";
 
 const CDN = "https://verses.quran.foundation/";
 
@@ -20,6 +21,7 @@ export function AudioButton({
 }) {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [playing, setPlaying] = useState(false);
+  const t = useT();
 
   useEffect(() => () => audioRef.current?.pause(), []);
 
@@ -43,8 +45,10 @@ export function AudioButton({
     <button
       onClick={onClick}
       disabled={!url}
-      title={label ?? "Recite"}
-      className="inline-flex h-7 items-center gap-1.5 rounded-full border border-hairline bg-surface/40 px-2.5 font-sans text-[10.5px] uppercase tracking-[0.2em] text-text-muted transition hover:border-hairline-strong hover:text-ink-bright disabled:opacity-40"
+      title={label ?? t.audioRecite}
+      className={`inline-flex h-7 items-center gap-1.5 rounded-full border border-hairline bg-surface/40 px-2.5 text-[10.5px] uppercase tracking-[0.2em] text-text-muted transition hover:border-hairline-strong hover:text-ink-bright disabled:opacity-40 ${
+        t.isRTL ? "font-arabic" : "font-sans"
+      }`}
     >
       {playing ? <PauseGlyph size={size} /> : <PlayGlyph size={size} />}
       {label && <span>{label}</span>}

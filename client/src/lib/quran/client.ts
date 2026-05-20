@@ -27,7 +27,7 @@ export type QuranCatalog = {
 /* ------------------------------ tiny cache ------------------------------ */
 
 const verseCache = new Map<string, Promise<QuranEnrichment>>();
-let catalogPromise: Promise<QuranCatalog> | null = null;
+const catalogCache = new Map<string, Promise<QuranCatalog>>();
 
 export type VerseFetchOptions = {
   words?: boolean;
@@ -71,9 +71,10 @@ export function fetchVerse(key: string, opts: VerseFetchOptions = {}): Promise<Q
   return p;
 }
 
-export function fetchCatalog(): Promise<QuranCatalog> {
-  if (catalogPromise) return catalogPromise;
-  catalogPromise = fetch("/api/quran/resources")
+export function fetchCatalog(lang: "en" | "ar" = "en"): Promise<QuranCatalog> {
+  const hit = catalogCache.get(lang);
+  if (hit) return hit;
+  const p: Promise<QuranCatalog> = fetch(`/api/quran/resources?lang=${lang}`)
     .then(async (r) => {
       const json = (await r.json()) as QuranCatalog;
       if (!r.ok && r.status !== 503) {
@@ -82,5 +83,6 @@ export function fetchCatalog(): Promise<QuranCatalog> {
       return json;
     })
     .catch((e) => ({ available: true, error: e instanceof Error ? e.message : String(e) }));
-  return catalogPromise;
+  catalogCache.set(lang, p);
+  return p;
 }

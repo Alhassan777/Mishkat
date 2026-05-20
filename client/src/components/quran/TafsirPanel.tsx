@@ -2,11 +2,17 @@
 
 import { useState } from "react";
 import type { Tafsir } from "@quranjs/api";
+import { useT } from "@/lib/i18n";
 
 /**
  * Renders a classical tafsīr (commentary) excerpt with a "read more"
  * affordance. The text from the API contains light HTML; we render it
  * as innerHTML after stripping anything that could be unsafe.
+ *
+ * The Quran.Foundation Content API doesn't return `resourceName` /
+ * `languageName` on the verse-tafsīr payload, so the caller passes both
+ * the attribution label (e.g. "تفسير ابن كثير") and the explicit content
+ * language so we can route Arabic text RTL with the calligraphy font.
  */
 function sanitize(html: string): string {
   return html
@@ -17,27 +23,43 @@ function sanitize(html: string): string {
     .replace(/javascript:/gi, "");
 }
 
-export function TafsirPanel({ tafsir }: { tafsir: Tafsir | undefined }) {
+export function TafsirPanel({
+  tafsir,
+  attribution,
+  language,
+}: {
+  tafsir: Tafsir | undefined;
+  attribution: string;
+  language: "ar" | "en";
+}) {
   const [open, setOpen] = useState(false);
+  const t = useT();
   if (!tafsir?.text) return null;
 
-  const isArabic = /^ar/i.test(tafsir.languageName ?? "");
-  const className = isArabic
+  const isArabic = language === "ar";
+  const bodyClass = isArabic
     ? "font-arabic text-[15.5px] leading-[2.05] text-text"
     : "font-sans text-[13.5px] leading-[1.7] text-text";
+
+  const labelClass = t.isRTL ? "font-arabic" : "font-sans";
 
   return (
     <div className="mt-4 rounded-lg border border-hairline bg-surface/40">
       <button
         onClick={() => setOpen((v) => !v)}
-        className="flex w-full items-center justify-between px-4 py-3 text-left transition hover:bg-ink/[0.04]"
+        className={`flex w-full items-center justify-between px-4 py-3 transition hover:bg-ink/[0.04] ${
+          t.isRTL ? "text-right" : "text-left"
+        }`}
       >
         <span className="flex flex-col gap-0.5">
-          <span className="font-sans text-[10.5px] uppercase tracking-[0.28em] text-text-faint">
-            Commentary
+          <span className={`text-[10.5px] uppercase tracking-[0.28em] text-text-faint ${labelClass}`}>
+            {t.tafsirCommentary}
           </span>
-          <span className="font-sans text-[13px] text-text">
-            {tafsir.resourceName ?? "Tafsīr"}
+          <span
+            className={`text-[14px] text-text ${isArabic ? "font-arabic" : "font-sans"}`}
+            dir={isArabic ? "rtl" : "ltr"}
+          >
+            {attribution}
           </span>
         </span>
         <span
@@ -51,7 +73,7 @@ export function TafsirPanel({ tafsir }: { tafsir: Tafsir | undefined }) {
       </button>
       {open && (
         <div
-          className={`border-t border-hairline px-4 py-4 ${className} thin-scroll max-h-[44vh] overflow-y-auto`}
+          className={`border-t border-hairline px-4 py-4 ${bodyClass} thin-scroll max-h-[44vh] overflow-y-auto`}
           dir={isArabic ? "rtl" : "ltr"}
           // eslint-disable-next-line react/no-danger
           dangerouslySetInnerHTML={{ __html: sanitize(tafsir.text) }}

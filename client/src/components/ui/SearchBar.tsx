@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useGraphStore } from "@/lib/store";
 import { fuzzyIncludes, normalizeForSearch } from "@/lib/arabic";
+import { useT } from "@/lib/i18n";
 import type { GraphData } from "@/types/graph";
 
 export function SearchBar() {
@@ -11,6 +12,7 @@ export function SearchBar() {
   const [open, setOpen] = useState(false);
   const [q, setQ] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
+  const t = useT();
 
   // Cmd/Ctrl+K opens, Esc closes.
   useEffect(() => {
@@ -40,8 +42,8 @@ export function SearchBar() {
         className="pointer-events-auto group absolute left-1/2 top-7 z-30 flex -translate-x-1/2 items-center gap-3 rounded-full border border-hairline bg-surface/55 px-5 py-2 backdrop-blur-md transition hover:border-hairline-strong hover:bg-surface/75"
       >
         <SearchIcon />
-        <span className="font-sans text-[12.5px] text-text-muted">
-          Search · <span className="text-text-faint">2:255 · al-baqarah</span>
+        <span className={`text-[12.5px] text-text-muted ${t.isRTL ? "font-arabic" : "font-sans"}`}>
+          {t.searchHint} · <span className="text-text-faint">{t.searchExample}</span>
         </span>
         <kbd className="rounded border border-hairline px-1.5 py-0.5 font-sans text-[10px] tracking-wider text-text-faint">
           ⌘K
@@ -71,22 +73,24 @@ export function SearchBar() {
                 ref={inputRef}
                 value={q}
                 onChange={(e) => setQ(e.target.value)}
-                placeholder="Reference (2:255), surah, or any Arabic phrase"
+                placeholder={t.searchPlaceholder}
                 dir="auto"
-                className={`flex-1 bg-transparent leading-[1.4] text-text placeholder:text-text-faint placeholder:font-sans placeholder:text-[14px] focus:outline-none ${
+                className={`flex-1 bg-transparent leading-[1.4] text-text placeholder:text-text-faint placeholder:text-[14px] focus:outline-none ${
+                  t.isRTL ? "placeholder:font-arabic" : "placeholder:font-sans"
+                } ${
                   /[؀-ۿݐ-ݿࢠ-ࣿﭐ-﷿ﹰ-﻿]/.test(q)
                     ? "font-quran text-[22px]"
                     : "font-sans text-[16px]"
                 }`}
               />
-              <span className="font-sans text-[10.5px] uppercase tracking-[0.24em] text-text-faint">
-                Esc
+              <span className={`text-[10.5px] uppercase tracking-[0.24em] text-text-faint ${t.isRTL ? "font-arabic" : "font-sans"}`}>
+                {t.searchEsc}
               </span>
             </div>
             <div className="flex-1 overflow-y-auto thin-scroll">
               {results.length === 0 && q && (
-                <div className="px-5 py-8 text-center font-sans text-[13px] text-text-faint">
-                  No āyah matched. Try a reference like <em>4:56</em>.
+                <div className={`px-5 py-8 text-center text-[13px] text-text-faint ${t.isRTL ? "font-arabic" : "font-sans"}`}>
+                  {t.searchNoMatch("4:56")}
                 </div>
               )}
               {results.map((id) => {

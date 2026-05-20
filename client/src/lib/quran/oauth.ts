@@ -44,6 +44,10 @@ export function buildAuthorizeUrl(codeChallenge: string, state: string): string 
   url.searchParams.set("state", state);
   url.searchParams.set("code_challenge", codeChallenge);
   url.searchParams.set("code_challenge_method", "S256");
+  // Force the IdP to show its login form even if it still has a session
+  // for the user. Without this, signing out clears our local cookie but
+  // the next "Sign in" click silently re-authenticates via QF's session.
+  url.searchParams.set("prompt", "login");
   return url.toString();
 }
 

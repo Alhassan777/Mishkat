@@ -1,22 +1,32 @@
 "use client";
 
 import { SettingsPopover } from "./SettingsPopover";
+import { LangSwitch } from "./LangSwitch";
 import { SignInWidget } from "@/components/auth/SignInWidget";
+import { useT } from "@/lib/i18n";
 
 export function Header() {
+  const t = useT();
   return (
     <header className="pointer-events-none absolute inset-x-0 top-0 z-30 flex items-start justify-between px-8 pt-7">
       <div className="pointer-events-auto flex items-center gap-3">
         <Mark />
         <div className="leading-tight">
-          <div className="font-sans text-[11px] font-semibold uppercase tracking-[0.32em] text-text">
-            Mutashābihāt Visualizer
+          <div
+            className={`font-semibold uppercase text-text ${
+              t.isRTL
+                ? "font-arabic text-[15px] tracking-[0.12em]"
+                : "font-sans text-[11px] tracking-[0.32em]"
+            }`}
+          >
+            {t.brand}
           </div>
         </div>
       </div>
 
-      <div className="pointer-events-auto flex items-center gap-6 text-[11px] uppercase tracking-[0.28em] text-text-faint">
+      <div className="pointer-events-auto flex items-center gap-3 text-[11px] uppercase tracking-[0.28em] text-text-faint">
         <SignInWidget />
+        <LangSwitch />
         <SettingsPopover />
       </div>
     </header>

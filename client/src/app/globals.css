@@ -43,6 +43,13 @@ body {
   overscroll-behavior: none;
 }
 
+/* When Arabic UI is active, prefer Readex Pro so any untranslated string
+   still renders with calligraphy-tuned proportions instead of Inter. */
+html[data-lang-ar="true"],
+html[data-lang-ar="true"] body {
+  font-family: var(--font-readex-arabic), var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+}
+
 ::selection {
   background: rgba(212, 175, 55, 0.32);
   color: var(--text);

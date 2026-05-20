@@ -1,6 +1,7 @@
 "use client";
 
 import { useUser } from "@/lib/user/store";
+import { useT } from "@/lib/i18n";
 
 export function SaveAyahButton({ verseKey }: { verseKey: string }) {
   const status = useUser((s) => s.status);
@@ -9,6 +10,8 @@ export function SaveAyahButton({ verseKey }: { verseKey: string }) {
   const add = useUser((s) => s.add);
   const remove = useUser((s) => s.remove);
   const signIn = useUser((s) => s.signIn);
+  const t = useT();
+  const sansForLang = t.isRTL ? "font-arabic" : "font-sans";
 
   // While bootstrapping, hide rather than flash.
   if (status === "unknown") return null;
@@ -19,24 +22,24 @@ export function SaveAyahButton({ verseKey }: { verseKey: string }) {
     return (
       <button
         onClick={() => signIn()}
-        title="Sign in to save"
-        className="inline-flex h-7 items-center gap-1.5 rounded-full border border-hairline bg-surface/40 px-2.5 font-sans text-[10.5px] uppercase tracking-[0.2em] text-text-muted transition hover:border-hairline-strong hover:text-ink-bright"
+        title={t.signInToSave}
+        className={`inline-flex h-7 items-center gap-1.5 rounded-full border border-hairline bg-surface/40 px-2.5 text-[10.5px] uppercase tracking-[0.2em] text-text-muted transition hover:border-hairline-strong hover:text-ink-bright ${sansForLang}`}
       >
         <BookmarkGlyph />
-        Sign in to save
+        {t.signInToSave}
       </button>
     );
   }
 
   const onClick = () => (saved ? remove(verseKey) : add(verseKey));
-  const label = saved ? "Saved" : "Save";
+  const label = saved ? t.saved : t.save;
 
   return (
     <button
       onClick={onClick}
       disabled={pending}
       title={label}
-      className={`inline-flex h-7 items-center gap-1.5 rounded-full border px-2.5 font-sans text-[10.5px] uppercase tracking-[0.2em] transition disabled:opacity-50 ${
+      className={`inline-flex h-7 items-center gap-1.5 rounded-full border px-2.5 text-[10.5px] uppercase tracking-[0.2em] transition disabled:opacity-50 ${sansForLang} ${
         saved
           ? "border-hairline-strong bg-ink/[0.14] text-ink-bright"
           : "border-hairline bg-surface/40 text-text-muted hover:border-hairline-strong hover:text-ink-bright"
