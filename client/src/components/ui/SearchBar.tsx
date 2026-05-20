@@ -74,7 +74,7 @@ export function SearchBar() {
                 value={q}
                 onChange={(e) => setQ(e.target.value)}
                 placeholder={t.searchPlaceholder}
-                dir="auto"
+                dir={q ? "auto" : t.isRTL ? "rtl" : "ltr"}
                 className={`flex-1 bg-transparent leading-[1.4] text-text placeholder:text-text-faint placeholder:text-[14px] focus:outline-none ${
                   t.isRTL ? "placeholder:font-arabic" : "placeholder:font-sans"
                 } ${
@@ -83,9 +83,14 @@ export function SearchBar() {
                     : "font-sans text-[16px]"
                 }`}
               />
-              <span className={`text-[10.5px] uppercase tracking-[0.24em] text-text-faint ${t.isRTL ? "font-arabic" : "font-sans"}`}>
+              <button
+                type="button"
+                onClick={() => setOpen(false)}
+                aria-label={t.searchEsc}
+                className="rounded border border-hairline px-1.5 py-0.5 font-sans text-[10.5px] uppercase tracking-[0.24em] text-text-faint transition hover:border-hairline-strong hover:text-text"
+              >
                 {t.searchEsc}
-              </span>
+              </button>
             </div>
             <div className="flex-1 overflow-y-auto thin-scroll">
               {results.length === 0 && q && (

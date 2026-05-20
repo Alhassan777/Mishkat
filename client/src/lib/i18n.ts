@@ -152,7 +152,7 @@ const ar: Dict = {
   searchHint: "ابحث",
   searchExample: "٢:٢٥٥ · البقرة",
   searchPlaceholder: "مرجع (٢:٢٥٥)، سورة، أو أي عبارة عربية",
-  searchEsc: "خروج",
+  searchEsc: "ESC",
   searchNoMatch: () => "لم تُطابق أي آية. جرّب مرجعًا مثل ٤:٥٦.",
   filterHintIdle: "اعزل الخيوط حسب نوع التشابه",
   filterHintOne: "تعرض عدسة واحدة — الباقي مُعتم",

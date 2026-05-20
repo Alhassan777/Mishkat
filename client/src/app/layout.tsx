@@ -23,7 +23,7 @@ const readexArabic = Readex_Pro({
 });
 
 export const metadata: Metadata = {
-  title: "Ayāt — The Infinite Ink",
+  title: "Ayāt — Qur'ānic Verse Connections",
   description:
     "A poetic 3D visualization of the connections between the verses of the Qur'ān, drawn from thirteen classical works on mutashābihāt, wujūh, and naẓāʾir.",
 };

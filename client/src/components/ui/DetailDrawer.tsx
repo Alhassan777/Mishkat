@@ -125,7 +125,7 @@ function NodeView({ graph, id, onClose }: { graph: GraphData; id: string; onClos
           </p>
         )}
 
-        <ul className="mt-3 flex flex-col gap-2">
+        <ul className="mt-3 flex flex-col gap-2" dir="rtl">
           {edges.map(({ idx, edge }) => {
             const otherId = edge.a === id ? edge.b : edge.a;
             const other = graph.nodes[otherId];
@@ -133,7 +133,8 @@ function NodeView({ graph, id, onClose }: { graph: GraphData; id: string; onClos
               <li key={idx}>
                 <button
                   onClick={() => setEdge([id, otherId])}
-                  className="group w-full rounded-lg border border-hairline bg-surface/40 px-4 py-3 text-left transition hover:border-hairline-strong hover:bg-surface/70"
+                  dir="rtl"
+                  className="group w-full rounded-lg border border-hairline bg-surface/40 px-4 py-3 text-start transition hover:border-hairline-strong hover:bg-surface/70"
                 >
                   <div className="flex items-center justify-between">
                     <div className="font-sans text-[12px] tracking-wider text-ink">
