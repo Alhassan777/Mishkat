@@ -2,6 +2,7 @@
 
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
+import { tafsirIdToKey, type TafsirKey } from "@/lib/quran/tafsirs";
 
 /**
  * User preferences for the Quran.com enrichments. Persisted to localStorage
@@ -14,7 +15,8 @@ import { persist } from "zustand/middleware";
  */
 type SettingsState = {
   translationId: number;
-  tafsirId: number;
+  /** Stable identifier — the concrete API id is resolved per UI language. */
+  tafsirKey: TafsirKey;
   reciterId: number;
   /** When true, render word-by-word tokens with hover meanings. */
   showWordByWord: boolean;
@@ -30,7 +32,7 @@ export const useSettings = create<SettingsState>()(
   persist(
     (set) => ({
       translationId: 20, // Saheeh International — English
-      tafsirId: 169, // Tafsīr Ibn Kathīr (abridged) — English
+      tafsirKey: "ibn-kathir",
       reciterId: 7, // Mishari Rashid al-`Afasy
       showWordByWord: true,
       showTranslation: true,
@@ -39,12 +41,18 @@ export const useSettings = create<SettingsState>()(
     }),
     {
       name: "ayat-settings",
-      version: 2,
-      // v1 used translationId 131 which doesn't exist in this account's
-      // catalog; remap stale values to the verified Saheeh International id.
+      version: 3,
       migrate: (state, fromVersion) => {
-        const s = state as Partial<SettingsState>;
+        const s = state as Partial<SettingsState> & { tafsirId?: number };
+        // v1 used translationId 131 which doesn't exist in this account's
+        // catalog; remap stale values to the verified Saheeh International id.
         if (fromVersion < 2 && s.translationId === 131) s.translationId = 20;
+        // v2 → v3: stored an opaque tafsīr id; convert to a stable key so
+        // we can pick the right language edition per UI language.
+        if (fromVersion < 3 && s.tafsirKey == null) {
+          s.tafsirKey = tafsirIdToKey(s.tafsirId);
+          delete s.tafsirId;
+        }
         return s as SettingsState;
       },
     },

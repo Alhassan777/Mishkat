@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import type { GraphData } from "@/types/graph";
 import { useGraphStore } from "@/lib/store";
+import { useApplyLangToDocument, useT } from "@/lib/i18n";
 import { Header } from "./ui/Header";
 import { SearchBar } from "./ui/SearchBar";
 import { FilterRail } from "./ui/FilterRail";
@@ -19,6 +20,7 @@ export function AppShell() {
   const setGraph = useGraphStore((s) => s.setGraph);
   const graph = useGraphStore((s) => s.graph);
   const [error, setError] = useState<string | null>(null);
+  useApplyLangToDocument();
 
   useEffect(() => {
     let cancelled = false;
@@ -54,27 +56,29 @@ export function AppShell() {
 }
 
 function LoadingVeil() {
+  const t = useT();
   return (
     <div className="pointer-events-none absolute inset-0 z-20 flex flex-col items-center justify-center gap-4">
       <div className="relative">
         <span className="absolute inset-0 -m-6 rounded-full bg-ink/10 blur-2xl" />
         <span className="block h-2 w-2 animate-pulse rounded-full bg-ink shadow-[0_0_24px_4px_rgba(212,175,55,0.55)]" />
       </div>
-      <div className="font-sans text-[11px] uppercase tracking-[0.4em] text-text-muted">
-        Drawing the threads…
+      <div className={`text-[11px] uppercase tracking-[0.4em] text-text-muted ${t.isRTL ? "font-arabic" : "font-sans"}`}>
+        {t.loadingDrawing}
       </div>
     </div>
   );
 }
 
 function ErrorVeil({ message }: { message: string }) {
+  const t = useT();
   return (
     <div className="absolute inset-0 z-20 flex items-center justify-center px-6">
       <div className="max-w-md rounded-xl border border-hairline-strong bg-surface/80 p-6 text-center backdrop-blur">
-        <div className="font-sans text-[11px] uppercase tracking-[0.32em] text-text-faint">
-          The sea is silent
+        <div className={`text-[11px] uppercase tracking-[0.32em] text-text-faint ${t.isRTL ? "font-arabic" : "font-sans"}`}>
+          {t.errorEyebrow}
         </div>
-        <p className="mt-3 font-sans text-[13px] text-text-muted">{message}</p>
+        <p className={`mt-3 text-[13px] text-text-muted ${t.isRTL ? "font-arabic" : "font-sans"}`}>{message}</p>
       </div>
     </div>
   );

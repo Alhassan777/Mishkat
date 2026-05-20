@@ -9,7 +9,9 @@ import { createHash, randomBytes } from "node:crypto";
  * authenticated user session, not the initial code exchange.
  */
 
-const SCOPES = ["openid", "offline_access", "bookmark"];
+// `collection` is needed alongside `bookmark` for the collection-scoped
+// endpoints (e.g. removing a verse from the default Favorites collection).
+const SCOPES = ["openid", "offline_access", "bookmark", "collection"];
 
 export function getOAuthConfig() {
   const base = process.env.QF_USER_OAUTH_BASE;
@@ -42,6 +44,10 @@ export function buildAuthorizeUrl(codeChallenge: string, state: string): string 
   url.searchParams.set("state", state);
   url.searchParams.set("code_challenge", codeChallenge);
   url.searchParams.set("code_challenge_method", "S256");
+  // Force the IdP to show its login form even if it still has a session
+  // for the user. Without this, signing out clears our local cookie but
+  // the next "Sign in" click silently re-authenticates via QF's session.
+  url.searchParams.set("prompt", "login");
   return url.toString();
 }
 

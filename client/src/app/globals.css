@@ -29,8 +29,8 @@
   --color-text-faint: var(--text-faint);
   --color-hairline: var(--hairline);
   --color-hairline-strong: var(--hairline-strong);
-  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
-  --font-arabic: var(--font-noto-arabic), "Segoe UI Arabic", sans-serif;
+  --font-sans: var(--font-inter), var(--font-readex-arabic), ui-sans-serif, system-ui, sans-serif;
+  --font-arabic: var(--font-readex-arabic), "Segoe UI Arabic", sans-serif;
   --font-quran: var(--font-scheherazade), "Amiri Quran", "Traditional Arabic", serif;
 }
 
@@ -38,14 +38,53 @@ html,
 body {
   background: var(--ocean);
   color: var(--text);
-  font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  font-family: var(--font-inter), var(--font-readex-arabic), ui-sans-serif, system-ui, sans-serif;
   overflow: hidden;
   overscroll-behavior: none;
+}
+
+/* When Arabic UI is active, prefer Readex Pro so any untranslated string
+   still renders with calligraphy-tuned proportions instead of Inter. */
+html[data-lang-ar="true"],
+html[data-lang-ar="true"] body {
+  font-family: var(--font-readex-arabic), var(--font-inter), ui-sans-serif, system-ui, sans-serif;
 }
 
 ::selection {
   background: rgba(212, 175, 55, 0.32);
   color: var(--text);
+}
+
+/* Tailwind v4 removed the default cursor: pointer on buttons — restore it for
+   anything that is semantically or visibly clickable. */
+button:not(:disabled),
+[role="button"]:not([aria-disabled="true"]),
+[role="link"],
+[role="tab"]:not([aria-disabled="true"]),
+[role="menuitem"]:not([aria-disabled="true"]),
+[role="option"]:not([aria-disabled="true"]),
+[role="checkbox"]:not([aria-disabled="true"]),
+[role="radio"]:not([aria-disabled="true"]),
+[role="switch"]:not([aria-disabled="true"]),
+a[href],
+label[for],
+summary,
+select:not(:disabled),
+input[type="button"]:not(:disabled),
+input[type="submit"]:not(:disabled),
+input[type="reset"]:not(:disabled),
+input[type="checkbox"]:not(:disabled),
+input[type="radio"]:not(:disabled),
+input[type="file"]:not(:disabled),
+input[type="image"]:not(:disabled) {
+  cursor: pointer;
+}
+
+button:disabled,
+[aria-disabled="true"],
+select:disabled,
+input:disabled {
+  cursor: not-allowed;
 }
 
 /* Subtle scrollbars inside floating panels */

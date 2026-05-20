@@ -1,7 +1,8 @@
 "use client";
 
 import { useGraphStore } from "@/lib/store";
-import { CATEGORY_COLOR, CATEGORY_LABEL, type Category } from "@/types/graph";
+import { useT } from "@/lib/i18n";
+import { CATEGORY_COLOR, type Category } from "@/types/graph";
 
 const CATEGORIES: Category[] = [
   "structural",
@@ -16,20 +17,26 @@ export function FilterRail() {
   const active = useGraphStore((s) => s.activeCategories);
   const toggle = useGraphStore((s) => s.toggleCategory);
   const clear = useGraphStore((s) => s.clearCategories);
+  const t = useT();
 
-  const hint = active.size === 0
-    ? "Isolate threads by kind of similarity"
-    : `Showing ${active.size === 1 ? "one lens" : `${active.size} lenses`} — others dimmed`;
+  const hint =
+    active.size === 0
+      ? t.filterHintIdle
+      : active.size === 1
+        ? t.filterHintOne
+        : t.filterHintMany(active.size);
+
+  const sansForLang = t.isRTL ? "font-arabic" : "font-sans";
 
   return (
     <div className="pointer-events-none absolute inset-x-0 bottom-7 z-30 flex flex-col items-center gap-3">
-      <div className="font-sans text-[10.5px] uppercase tracking-[0.32em] text-text-faint">
+      <div className={`text-[10.5px] font-bold uppercase tracking-[0.32em] text-text-faint ${sansForLang}`}>
         {hint}
       </div>
       <div className="hairline w-40 opacity-60" />
       <div className="pointer-events-auto flex items-center gap-2 rounded-full border border-hairline bg-surface/55 px-2.5 py-1.5 backdrop-blur-md">
-        <span className="ml-2 mr-1 font-sans text-[10.5px] uppercase tracking-[0.26em] text-text-faint">
-          Lens
+        <span className={`ml-2 mr-1 text-[10.5px] uppercase tracking-[0.26em] text-text-faint ${sansForLang}`}>
+          {t.filterLens}
         </span>
         {CATEGORIES.map((c) => {
           const on = active.has(c);
@@ -38,7 +45,7 @@ export function FilterRail() {
             <button
               key={c}
               onClick={() => toggle(c)}
-              className={`group flex items-center gap-1.5 rounded-full border px-3 py-1 font-sans text-[11.5px] transition ${
+              className={`group flex items-center gap-1.5 rounded-full border px-3 py-1 text-[11.5px] transition ${sansForLang} ${
                 on
                   ? "border-hairline-strong bg-ink/[0.12] text-text"
                   : "border-transparent text-text-muted hover:bg-ink/[0.05] hover:text-text"
@@ -51,16 +58,16 @@ export function FilterRail() {
                   boxShadow: on ? `0 0 8px ${color}` : "none",
                 }}
               />
-              {CATEGORY_LABEL[c]}
+              {t.category[c]}
             </button>
           );
         })}
         {active.size > 0 && (
           <button
             onClick={clear}
-            className="ml-1 rounded-full px-2 py-1 font-sans text-[10.5px] uppercase tracking-[0.2em] text-text-faint transition hover:text-text"
+            className={`ml-1 rounded-full px-2 py-1 text-[10.5px] uppercase tracking-[0.2em] text-text-faint transition hover:text-text ${sansForLang}`}
           >
-            Clear
+            {t.filterClear}
           </button>
         )}
       </div>

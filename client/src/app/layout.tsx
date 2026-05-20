@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Scheherazade_New, Noto_Sans_Arabic } from "next/font/google";
+import { Inter, Scheherazade_New, Readex_Pro } from "next/font/google";
 import "./globals.css";
 
 const inter = Inter({
@@ -15,15 +15,15 @@ const scheherazade = Scheherazade_New({
   display: "swap",
 });
 
-const notoArabic = Noto_Sans_Arabic({
-  variable: "--font-noto-arabic",
-  subsets: ["arabic"],
+const readexArabic = Readex_Pro({
+  variable: "--font-readex-arabic",
+  subsets: ["arabic", "latin"],
   weight: ["300", "400", "500", "600"],
   display: "swap",
 });
 
 export const metadata: Metadata = {
-  title: "Ayāt — The Infinite Ink",
+  title: "Ayāt — Qur'ānic Verse Connections",
   description:
     "A poetic 3D visualization of the connections between the verses of the Qur'ān, drawn from thirteen classical works on mutashābihāt, wujūh, and naẓāʾir.",
 };
@@ -34,8 +34,18 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${inter.variable} ${scheherazade.variable} ${notoArabic.variable} h-full antialiased`}
+      className={`${inter.variable} ${scheherazade.variable} ${readexArabic.variable} h-full antialiased`}
+      suppressHydrationWarning
     >
+      <head>
+        {/* Apply the persisted UI language synchronously so RTL/Arabic font
+            don't flicker on first paint. Mirrors useApplyLangToDocument. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(()=>{try{var s=localStorage.getItem('ayat-lang');if(!s)return;var l=(JSON.parse(s)||{}).state&&JSON.parse(s).state.lang;if(l!=='ar'&&l!=='en')return;var h=document.documentElement;h.lang=l;h.dir=l==='ar'?'rtl':'ltr';if(l==='ar')h.dataset.langAr='true';}catch(e){}})();`,
+          }}
+        />
+      </head>
       <body className="min-h-full">{children}</body>
     </html>
   );

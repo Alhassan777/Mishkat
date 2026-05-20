@@ -13,9 +13,13 @@ export async function DELETE(
   const { id } = await params;
   if (!id) return NextResponse.json({ error: "id required" }, { status: 400 });
 
-  const r = await callUserApi(`/auth/v1/bookmarks/${encodeURIComponent(id)}`, {
-    method: "DELETE",
-  });
+  // We have to go through the collection endpoint — the standalone
+  // /auth/v1/bookmarks/{id} delete won't detach items from the default
+  // Favorites collection (it just clears isReading), so saves persist.
+  const r = await callUserApi(
+    `/auth/v1/collections/__default__/bookmarks/${encodeURIComponent(id)}`,
+    { method: "DELETE" },
+  );
   if (r.kind === "unauthorized") {
     return NextResponse.json({ error: "Not signed in" }, { status: 401 });
   }

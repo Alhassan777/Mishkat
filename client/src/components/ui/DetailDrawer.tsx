@@ -3,15 +3,16 @@
 import { useMemo } from "react";
 import { useGraphStore } from "@/lib/store";
 import { useSettings } from "@/lib/settings-store";
+import { useT } from "@/lib/i18n";
+import { resolveTafsirId, tafsirLabel, tafsirLanguage } from "@/lib/quran/tafsirs";
 import { useVerse } from "@/lib/quran/useVerse";
 import { WordTokens } from "@/components/quran/WordTokens";
 import { TranslationLine } from "@/components/quran/TranslationLine";
 import { AudioButton } from "@/components/quran/AudioButton";
-import { PairAudioButton } from "@/components/quran/PairAudioButton";
 import { TafsirPanel } from "@/components/quran/TafsirPanel";
 import { diffWordSets } from "@/components/quran/diff";
 import { SaveAyahButton } from "@/components/ui/SaveAyahButton";
-import { CATEGORY_COLOR, CATEGORY_LABEL, type Category, type Edge, type GraphData, type Opinion } from "@/types/graph";
+import { CATEGORY_COLOR, type Category, type Edge, type GraphData, type Opinion } from "@/types/graph";
 
 export function DetailDrawer() {
   const graph = useGraphStore((s) => s.graph);
@@ -55,11 +56,13 @@ function NodeView({ graph, id, onClose }: { graph: GraphData; id: string; onClos
   const setEdge = useGraphStore((s) => s.setSelectedEdge);
   const activeCategories = useGraphStore((s) => s.activeCategories);
   const s = useSettings();
+  const t = useT();
+  const sansForLang = t.isRTL ? "font-arabic" : "font-sans";
 
   const enrichment = useVerse(id, {
     words: s.showWordByWord,
     translation: s.showTranslation ? s.translationId : undefined,
-    tafsir: s.showTafsir ? s.tafsirId : undefined,
+    tafsir: s.showTafsir ? resolveTafsirId(s.tafsirKey, t.lang) : undefined,
     reciter: s.reciterId,
   });
   const verse = enrichment?.available && !enrichment.error ? enrichment.verse : undefined;
@@ -78,7 +81,7 @@ function NodeView({ graph, id, onClose }: { graph: GraphData; id: string; onClos
   return (
     <>
       <DrawerHeader
-        eyebrow={`Sūrah ${node.s} · ${node.sn}`}
+        eyebrow={t.drawerSurah(node.s, node.sn)}
         title={`${node.s}:${node.a}`}
         onClose={onClose}
       />
@@ -89,37 +92,40 @@ function NodeView({ graph, id, onClose }: { graph: GraphData; id: string; onClos
         <div className="rise mt-7">
           <VerseBody node={node} verse={verse} size={28} />
           <div className="mt-4 flex items-center gap-2">
-            <AudioButton url={verse?.audio?.url} label="Recite" />
+            <AudioButton url={verse?.audio?.url} label={t.audioRecite} />
             <SaveAyahButton verseKey={id} />
             {enrichment && !enrichment.available && (
-              <span className="font-sans text-[10.5px] uppercase tracking-[0.22em] text-text-faint">
-                · enable audio & translation in settings
+              <span className={`text-[10.5px] uppercase tracking-[0.22em] text-text-faint ${sansForLang}`}>
+                {t.drawerMoreInSettings}
               </span>
             )}
           </div>
         </div>
 
-        {s.showTafsir && verse?.tafsirs?.[0] && <TafsirPanel tafsir={verse.tafsirs[0]} />}
+        {s.showTafsir && verse?.tafsirs?.[0] && (
+          <TafsirPanel
+            tafsir={verse.tafsirs[0]}
+            attribution={tafsirLabel(s.tafsirKey, t.lang)}
+            language={tafsirLanguage(s.tafsirKey, t.lang)}
+          />
+        )}
 
-        <Meta label="Juzʾ" value={`${node.j}`} secondary={`Hizb ¼ · ${node.hq}`} />
+        <Meta label={t.drawerJuz} value={`${node.j}`} secondary={`${t.drawerHizb} · ${node.hq}`} />
 
-        <SectionHeading
-          left="Connections"
-          right={`${edges.length} thread${edges.length === 1 ? "" : "s"}`}
-        />
+        <SectionHeading left={t.drawerConnections} right={t.drawerThreads(edges.length)} />
 
         {hiddenCount > 0 && (
-          <p className="mt-2 font-sans text-[10.5px] uppercase tracking-[0.22em] text-text-faint">
-            {hiddenCount} more outside the active lens
+          <p className={`mt-2 text-[10.5px] uppercase tracking-[0.22em] text-text-faint ${sansForLang}`}>
+            {t.drawerHiddenLens(hiddenCount)}
           </p>
         )}
         {edges.length === 0 && (
-          <p className="mt-4 rounded-lg border border-hairline bg-surface/40 px-4 py-5 text-center font-sans text-[12.5px] text-text-muted">
-            No threads of this kind reach this āyah. Clear the lens to see all {allCount}.
+          <p className={`mt-4 rounded-lg border border-hairline bg-surface/40 px-4 py-5 text-center text-[12.5px] text-text-muted ${sansForLang}`}>
+            {t.drawerNoThreads(allCount)}
           </p>
         )}
 
-        <ul className="mt-3 flex flex-col gap-2">
+        <ul className="mt-3 flex flex-col gap-2" dir="rtl">
           {edges.map(({ idx, edge }) => {
             const otherId = edge.a === id ? edge.b : edge.a;
             const other = graph.nodes[otherId];
@@ -127,15 +133,16 @@ function NodeView({ graph, id, onClose }: { graph: GraphData; id: string; onClos
               <li key={idx}>
                 <button
                   onClick={() => setEdge([id, otherId])}
-                  className="group w-full rounded-lg border border-hairline bg-surface/40 px-4 py-3 text-left transition hover:border-hairline-strong hover:bg-surface/70"
+                  dir="rtl"
+                  className="group w-full rounded-lg border border-hairline bg-surface/40 px-4 py-3 text-start transition hover:border-hairline-strong hover:bg-surface/70"
                 >
                   <div className="flex items-center justify-between">
                     <div className="font-sans text-[12px] tracking-wider text-ink">
                       {other.s}:{other.a}
-                      <span className="ml-2 text-text-faint">{other.sn}</span>
+                      <span className={`ml-2 text-text-faint ${sansForLang}`}>{other.sn}</span>
                     </div>
                     <div className="flex items-center gap-1.5">
-                      {dotsForOpinions(edge.ops)}
+                      <DotsForOpinions ops={edge.ops} />
                       <span className="ml-1 font-sans text-[10.5px] uppercase tracking-[0.2em] text-text-faint">
                         {edge.ops.length}
                       </span>
@@ -175,6 +182,8 @@ function ComparisonView({
   const a = graph.nodes[idA];
   const b = graph.nodes[idB];
   const s = useSettings();
+  const t = useT();
+  const sansForLang = t.isRTL ? "font-arabic" : "font-sans";
 
   const eA = useVerse(idA, {
     words: s.showWordByWord,
@@ -220,23 +229,21 @@ function ComparisonView({
       <DrawerHeader
         eyebrow={
           <button onClick={onBack} className="flex items-center gap-1.5 transition hover:text-text">
-            <ArrowLeft />
-            <span>Back to {a.s}:{a.a}</span>
+            <ArrowLeft flipped={t.isRTL} />
+            <span>{t.drawerBackTo(`${a.s}:${a.a}`)}</span>
           </button>
         }
-        title="Comparison"
+        title={t.drawerComparison}
+        titleIsArabic={t.isRTL}
         onClose={onClose}
       />
 
       <div className="thin-scroll flex-1 overflow-y-auto px-7 pb-12">
-        <div className="mt-2 flex items-center justify-between gap-3">
-          <div className="flex items-center gap-3">
-            <CategoryChip cat={edge.pc} />
-            <span className="font-sans text-[10.5px] uppercase tracking-[0.24em] text-text-faint">
-              {edge.ops.length} reading{edge.ops.length === 1 ? "" : "s"}
-            </span>
-          </div>
-          <PairAudioButton urlA={verseA?.audio?.url} urlB={verseB?.audio?.url} />
+        <div className="mt-2 flex items-center gap-3">
+          <CategoryChip cat={edge.pc} />
+          <span className={`text-[10.5px] uppercase tracking-[0.24em] text-text-faint ${sansForLang}`}>
+            {t.drawerReadings(edge.ops.length)}
+          </span>
         </div>
 
         <AyahCard side="A" node={a} verse={verseA} diffMask={maskA} />
@@ -244,12 +251,12 @@ function ComparisonView({
         <AyahCard side="B" node={b} verse={verseB} diffMask={maskB} />
 
         {(maskA?.size || maskB?.size) && s.showWordByWord ? (
-          <p className="mt-4 font-sans text-[10.5px] uppercase tracking-[0.22em] text-text-faint">
-            Highlighted words appear in one āyah but not the other
+          <p className={`mt-4 text-[10.5px] uppercase tracking-[0.22em] text-text-faint ${sansForLang}`}>
+            {t.drawerDiffHint}
           </p>
         ) : null}
 
-        <SectionHeading left="The readings" right={`${edge.ops.length}`} />
+        <SectionHeading left={t.drawerTheReadings} right={`${edge.ops.length}`} />
 
         <div className="mt-3 flex flex-col gap-3">
           {edge.ops.map((op, i) => (
@@ -266,24 +273,35 @@ function ComparisonView({
 function DrawerHeader({
   eyebrow,
   title,
+  titleIsArabic,
   onClose,
 }: {
   eyebrow: React.ReactNode;
   title: string;
+  /** Force the Arabic UI font on the title even when it isn't a number-ref. */
+  titleIsArabic?: boolean;
   onClose: () => void;
 }) {
+  const t = useT();
+  const sansForLang = t.isRTL ? "font-arabic" : "font-sans";
   return (
     <div className="flex items-start justify-between border-b border-hairline px-7 pb-5 pt-7">
       <div className="flex flex-col gap-1.5">
-        <span className="font-sans text-[10.5px] uppercase tracking-[0.28em] text-text-faint">
+        <span className={`text-[10.5px] uppercase tracking-[0.28em] text-text-faint ${sansForLang}`}>
           {eyebrow}
         </span>
-        <h2 className="font-sans text-[26px] font-medium tracking-tight text-text">{title}</h2>
+        <h2
+          className={`text-[26px] font-medium tracking-tight text-text ${
+            titleIsArabic ? "font-arabic" : "font-sans"
+          }`}
+        >
+          {title}
+        </h2>
       </div>
       <button
         onClick={onClose}
         className="flex h-8 w-8 items-center justify-center rounded-full border border-hairline text-text-muted transition hover:border-hairline-strong hover:text-text"
-        aria-label="Close"
+        aria-label={t.drawerClose}
       >
         <CloseIcon />
       </button>
@@ -292,17 +310,19 @@ function DrawerHeader({
 }
 
 function SurahCard({ node }: { node: GraphData["nodes"][string] }) {
+  const t = useT();
+  const sansForLang = t.isRTL ? "font-arabic" : "font-sans";
   return (
     <div className="mt-5 flex items-center justify-between rounded-lg border border-hairline bg-surface/40 px-4 py-3">
-      <div className="font-sans text-[11px] uppercase tracking-[0.26em] text-text-faint">
-        Cluster
+      <div className={`text-[11px] uppercase tracking-[0.26em] text-text-faint ${sansForLang}`}>
+        {t.drawerCluster}
       </div>
-      <div className="text-right">
+      <div className={t.isRTL ? "text-left" : "text-right"}>
         <div className="font-quran text-[19px] text-ink-bright" dir="rtl">
           {node.sna}
         </div>
-        <div className="font-sans text-[11px] text-text-muted">
-          Sūrah {node.s} · {node.sn}
+        <div className={`text-[11px] text-text-muted ${sansForLang}`}>
+          {t.drawerSurah(node.s, node.sn)}
         </div>
       </div>
     </div>
@@ -310,8 +330,10 @@ function SurahCard({ node }: { node: GraphData["nodes"][string] }) {
 }
 
 function Meta({ label, value, secondary }: { label: string; value: string; secondary?: string }) {
+  const t = useT();
+  const sansForLang = t.isRTL ? "font-arabic" : "font-sans";
   return (
-    <div className="mt-5 flex items-center gap-4 font-sans text-[11.5px] text-text-faint">
+    <div className={`mt-5 flex items-center gap-4 text-[11.5px] text-text-faint ${sansForLang}`}>
       <span className="uppercase tracking-[0.24em]">{label}</span>
       <span className="text-text-muted">{value}</span>
       {secondary && <span className="text-text-faint">· {secondary}</span>}
@@ -320,13 +342,15 @@ function Meta({ label, value, secondary }: { label: string; value: string; secon
 }
 
 function SectionHeading({ left, right }: { left: string; right?: string }) {
+  const t = useT();
+  const sansForLang = t.isRTL ? "font-arabic" : "font-sans";
   return (
     <div className="mt-8 flex items-center justify-between border-t border-hairline pt-5">
-      <span className="font-sans text-[10.5px] uppercase tracking-[0.32em] text-text-muted">
+      <span className={`text-[10.5px] uppercase tracking-[0.32em] text-text-muted ${sansForLang}`}>
         {left}
       </span>
       {right && (
-        <span className="font-sans text-[10.5px] uppercase tracking-[0.24em] text-text-faint">
+        <span className={`text-[10.5px] uppercase tracking-[0.24em] text-text-faint ${sansForLang}`}>
           {right}
         </span>
       )}
@@ -347,6 +371,8 @@ function AyahCard({
   verse?: VerseLike;
   diffMask?: Set<number>;
 }) {
+  const t = useT();
+  const sansForLang = t.isRTL ? "font-arabic" : "font-sans";
   return (
     <div className="mt-5 rise">
       <div className="mb-3 flex items-center justify-between">
@@ -357,11 +383,11 @@ function AyahCard({
           <span className="font-sans text-[12px] tracking-wider text-ink">
             {node.s}:{node.a}
           </span>
-          <span className="font-sans text-[11px] text-text-faint">· {node.sn}</span>
+          <span className={`text-[11px] text-text-faint ${sansForLang}`}>· {node.sn}</span>
         </div>
         <div className="flex items-center gap-3">
-          <span className="font-sans text-[10.5px] uppercase tracking-[0.22em] text-text-faint">
-            Juzʾ {node.j}
+          <span className={`text-[10.5px] uppercase tracking-[0.22em] text-text-faint ${sansForLang}`}>
+            {t.drawerJuz} {node.j}
           </span>
           <AudioButton url={verse?.audio?.url} />
         </div>
@@ -423,6 +449,8 @@ function Divider() {
 
 function OpinionCard({ op, graph }: { op: Opinion; graph: GraphData }) {
   const book = graph.books[op.bk];
+  const t = useT();
+  const sansForLang = t.isRTL ? "font-arabic" : "font-sans";
   return (
     <div className="rounded-lg border border-hairline bg-surface/40 px-4 py-4 rise">
       <div className="mb-2 flex items-start justify-between gap-3">
@@ -443,7 +471,7 @@ function OpinionCard({ op, graph }: { op: Opinion; graph: GraphData }) {
           {op.r && <MicroChip>{prettify(op.r)}</MicroChip>}
           {op.w && (
             <MicroChip>
-              <span className="text-text-faint">wajh: </span>
+              <span className="text-text-faint">{t.drawerWajh} </span>
               <span dir="rtl">{op.w}</span>
             </MicroChip>
           )}
@@ -465,11 +493,11 @@ function OpinionCard({ op, graph }: { op: Opinion; graph: GraphData }) {
       )}
 
       {(op.p || op.cf !== undefined) && (
-        <div className="mt-3 flex items-center justify-between border-t border-hairline pt-2 font-sans text-[10.5px] text-text-faint">
+        <div className={`mt-3 flex items-center justify-between border-t border-hairline pt-2 text-[10.5px] text-text-faint ${sansForLang}`}>
           <span>{op.p ?? ""}</span>
           {op.cf !== undefined && (
             <span className="uppercase tracking-[0.22em]">
-              confidence · {Math.round(op.cf * 100)}%
+              {t.drawerConfidence} · {Math.round(op.cf * 100)}%
             </span>
           )}
         </div>
@@ -480,13 +508,16 @@ function OpinionCard({ op, graph }: { op: Opinion; graph: GraphData }) {
 
 function CategoryChip({ cat }: { cat: Category }) {
   const color = CATEGORY_COLOR[cat];
+  const t = useT();
   return (
     <span
-      className="inline-flex shrink-0 items-center gap-1.5 rounded-full border px-2.5 py-1 font-sans text-[10.5px] uppercase tracking-[0.18em]"
+      className={`inline-flex shrink-0 items-center gap-1.5 rounded-full border px-2.5 py-1 text-[10.5px] uppercase tracking-[0.18em] ${
+        t.isRTL ? "font-arabic" : "font-sans"
+      }`}
       style={{ borderColor: `${color}55`, color, background: `${color}10` }}
     >
       <span className="h-1.5 w-1.5 rounded-full" style={{ background: color, boxShadow: `0 0 6px ${color}` }} />
-      {CATEGORY_LABEL[cat]}
+      {t.category[cat]}
     </span>
   );
 }
@@ -499,16 +530,21 @@ function MicroChip({ children }: { children: React.ReactNode }) {
   );
 }
 
-function dotsForOpinions(ops: Opinion[]) {
+function DotsForOpinions({ ops }: { ops: Opinion[] }) {
+  const t = useT();
   const cats = Array.from(new Set(ops.map((o) => o.c))).slice(0, 4);
-  return cats.map((c) => (
-    <span
-      key={c}
-      className="h-1.5 w-1.5 rounded-full"
-      style={{ background: CATEGORY_COLOR[c], boxShadow: `0 0 4px ${CATEGORY_COLOR[c]}` }}
-      title={CATEGORY_LABEL[c]}
-    />
-  ));
+  return (
+    <>
+      {cats.map((c) => (
+        <span
+          key={c}
+          className="h-1.5 w-1.5 rounded-full"
+          style={{ background: CATEGORY_COLOR[c], boxShadow: `0 0 4px ${CATEGORY_COLOR[c]}` }}
+          title={t.category[c]}
+        />
+      ))}
+    </>
+  );
 }
 
 function prettify(s: string) {
@@ -523,9 +559,15 @@ function CloseIcon() {
   );
 }
 
-function ArrowLeft() {
+function ArrowLeft({ flipped }: { flipped?: boolean }) {
   return (
-    <svg width="10" height="10" viewBox="0 0 12 12" fill="none">
+    <svg
+      width="10"
+      height="10"
+      viewBox="0 0 12 12"
+      fill="none"
+      style={flipped ? { transform: "scaleX(-1)" } : undefined}
+    >
       <path d="M7 2 3 6l4 4" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   );

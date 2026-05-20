@@ -15,7 +15,7 @@ export function TranslationLine({ translation }: { translation: Translation | un
   if (!translation?.text) return null;
   return (
     <p
-      className="mt-3 font-sans text-[13px] italic leading-[1.7] text-text-muted"
+      className="rise mt-3 font-sans text-[13px] italic leading-[1.7] text-text-muted"
       dir="ltr"
     >
       <span className="mr-2 text-text-faint">“</span>

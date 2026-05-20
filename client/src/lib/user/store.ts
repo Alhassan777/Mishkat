@@ -3,14 +3,8 @@
 import { create } from "zustand";
 
 /**
- * Bookmark state with a local-first fallback.
- *
- * Source of truth depends on `status`:
- *   - signed_in     → Quran.Foundation cloud (synced across devices)
- *   - signed_out    → browser localStorage only (works offline, this device)
- *   - not_configured → same as signed_out (QF user creds missing)
- *
- * Save always works. Sign-in is an upgrade that lets bookmarks roam.
+ * Bookmarks live in Quran.Foundation's cloud and require sign-in. Signed-out
+ * users see no bookmark surface at all — there is no local fallback.
  */
 
 export type Bookmark = { id: string; verseKey: string };
@@ -31,35 +25,8 @@ type UserState = {
   remove: (verseKey: string) => Promise<void>;
 };
 
-const LOCAL_KEY = "ayat-local-bookmarks-v1";
-
 function recompute(bookmarks: Bookmark[]): Set<string> {
   return new Set(bookmarks.map((b) => b.verseKey));
-}
-
-function loadLocal(): Bookmark[] {
-  if (typeof window === "undefined") return [];
-  try {
-    const raw = window.localStorage.getItem(LOCAL_KEY);
-    if (!raw) return [];
-    const parsed = JSON.parse(raw) as Bookmark[];
-    return Array.isArray(parsed) ? parsed : [];
-  } catch {
-    return [];
-  }
-}
-
-function saveLocal(bookmarks: Bookmark[]) {
-  if (typeof window === "undefined") return;
-  try {
-    window.localStorage.setItem(LOCAL_KEY, JSON.stringify(bookmarks));
-  } catch {
-    /* Quota / disabled storage — silent. */
-  }
-}
-
-function localId(verseKey: string): string {
-  return `local-${verseKey}-${Date.now().toString(36)}`;
 }
 
 export const useUser = create<UserState>((set, get) => ({
@@ -70,29 +37,23 @@ export const useUser = create<UserState>((set, get) => ({
   pending: new Set(),
 
   refresh: async () => {
-    // Always seed local list first so the UI is instant.
-    const local = loadLocal();
-    set({ bookmarks: local, saved: recompute(local) });
-
     let me: { signedIn?: boolean; configured?: boolean } = {};
     try {
       const r = await fetch("/api/auth/me");
       me = await r.json();
     } catch {
-      // Network failure: stay in local-only mode.
-      set({ status: "not_configured", configured: false });
+      set({ status: "not_configured", configured: false, bookmarks: [], saved: new Set() });
       return;
     }
 
     if (!me.configured) {
-      set({ status: "not_configured", configured: false });
+      set({ status: "not_configured", configured: false, bookmarks: [], saved: new Set() });
       return;
     }
     if (!me.signedIn) {
-      set({ status: "signed_out", configured: true });
+      set({ status: "signed_out", configured: true, bookmarks: [], saved: new Set() });
       return;
     }
-    // Signed in — the cloud is source of truth, overriding local for display.
     set({ status: "signed_in", configured: true });
     try {
       const br = await fetch("/api/bookmarks");
@@ -113,24 +74,14 @@ export const useUser = create<UserState>((set, get) => ({
 
   signOut: async () => {
     await fetch("/api/auth/logout", { method: "POST" }).catch(() => null);
-    // Drop back to local-only view of the device's bookmarks.
-    const local = loadLocal();
-    set({ status: "signed_out", bookmarks: local, saved: recompute(local) });
+    set({ status: "signed_out", bookmarks: [], saved: new Set() });
   },
 
   add: async (verseKey: string) => {
     const s = get();
+    if (s.status !== "signed_in") return;
     if (s.saved.has(verseKey) || s.pending.has(verseKey)) return;
 
-    // Local mode: write to localStorage immediately, no network.
-    if (s.status !== "signed_in") {
-      const next = [{ id: localId(verseKey), verseKey }, ...s.bookmarks];
-      saveLocal(next);
-      set({ bookmarks: next, saved: recompute(next) });
-      return;
-    }
-
-    // Signed-in: optimistic + remote.
     const tempId = `tmp-${verseKey}`;
     const optimistic: Bookmark = { id: tempId, verseKey };
     const nextList = [optimistic, ...s.bookmarks];
@@ -163,18 +114,10 @@ export const useUser = create<UserState>((set, get) => ({
 
   remove: async (verseKey: string) => {
     const s = get();
+    if (s.status !== "signed_in") return;
     const existing = s.bookmarks.find((b) => b.verseKey === verseKey);
     if (!existing || s.pending.has(verseKey)) return;
 
-    // Local mode: same — remove from storage immediately.
-    if (s.status !== "signed_in") {
-      const next = s.bookmarks.filter((b) => b.verseKey !== verseKey);
-      saveLocal(next);
-      set({ bookmarks: next, saved: recompute(next) });
-      return;
-    }
-
-    // Signed-in: optimistic + remote.
     const snapshot = s.bookmarks;
     const next = snapshot.filter((b) => b.verseKey !== verseKey);
     set({
