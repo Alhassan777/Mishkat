@@ -9,7 +9,9 @@ import { createHash, randomBytes } from "node:crypto";
  * authenticated user session, not the initial code exchange.
  */
 
-const SCOPES = ["openid", "offline_access", "bookmark"];
+// `collection` is needed alongside `bookmark` for the collection-scoped
+// endpoints (e.g. removing a verse from the default Favorites collection).
+const SCOPES = ["openid", "offline_access", "bookmark", "collection"];
 
 export function getOAuthConfig() {
   const base = process.env.QF_USER_OAUTH_BASE;
