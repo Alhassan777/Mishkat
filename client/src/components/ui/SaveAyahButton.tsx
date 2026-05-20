@@ -8,9 +8,25 @@ export function SaveAyahButton({ verseKey }: { verseKey: string }) {
   const pending = useUser((s) => s.pending.has(verseKey));
   const add = useUser((s) => s.add);
   const remove = useUser((s) => s.remove);
+  const signIn = useUser((s) => s.signIn);
 
-  // While the store is still bootstrapping, hide rather than flash.
+  // While bootstrapping, hide rather than flash.
   if (status === "unknown") return null;
+  // QF not wired up — bookmarks aren't possible at all.
+  if (status === "not_configured") return null;
+
+  if (status !== "signed_in") {
+    return (
+      <button
+        onClick={() => signIn()}
+        title="Sign in to save"
+        className="inline-flex h-7 items-center gap-1.5 rounded-full border border-hairline bg-surface/40 px-2.5 font-sans text-[10.5px] uppercase tracking-[0.2em] text-text-muted transition hover:border-hairline-strong hover:text-ink-bright"
+      >
+        <BookmarkGlyph />
+        Sign in to save
+      </button>
+    );
+  }
 
   const onClick = () => (saved ? remove(verseKey) : add(verseKey));
   const label = saved ? "Saved" : "Save";
