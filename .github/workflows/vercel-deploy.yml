@@ -1,6 +1,5 @@
 # Deploys the Next.js app in client/ to Vercel on every push to main.
 # Add GitHub repo secrets: VERCEL_TOKEN, VERCEL_ORG_ID, VERCEL_PROJECT_ID
-# (see .vercel/project.json locally after `vercel link`).
 
 name: Deploy to Vercel
 
@@ -16,9 +15,8 @@ env:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: client
+    # NO default working-directory — Vercel commands run from repo root
+    # so the dashboard's root=client setting resolves correctly.
 
     steps:
       - uses: actions/checkout@v4
@@ -30,9 +28,10 @@ jobs:
           cache-dependency-path: client/package-lock.json
 
       - name: Install dependencies
+        working-directory: client
         run: npm ci
 
-      - name: Create .vercel link
+      - name: Create Vercel project link
         run: |
           mkdir -p .vercel
           echo '{"projectId":"'"$VERCEL_PROJECT_ID"'","orgId":"'"$VERCEL_ORG_ID"'"}' > .vercel/project.json
