@@ -5,6 +5,8 @@
 Mishkāt uses 14 classical Arabic books (Shamela markdown exports) stored under `data/sources/`.
 Each source file includes `رقم الكتاب`, which maps to a normalized pipeline slug in `pipeline/mutashabihat/registry.py`.
 
+For book selection rationale, tier assignments, and per-book justifications, see `docs/BOOKS.md`.
+
 ## Data Model
 
 The extraction record schema is defined by the Pydantic `BaseRecord` model in `pipeline/mutashabihat/models/base_record.py`.

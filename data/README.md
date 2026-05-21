@@ -17,6 +17,8 @@ Mishkāt Mutashābihāt Graph Dataset (v0.1)
 Source corpus consists of Shamela-format markdown exports.  
 Book IDs are mapped through `pipeline/mutashabihat/registry.py`.
 
+For the full book selection rationale, tier system, and per-book justification, see `docs/BOOKS.md`.
+
 ## Data Schema Summary
 
 ### Record-level (JSONL)
@@ -47,8 +49,3 @@ Current shipped graph:
 - Coverage is incomplete for two future-expansion books.
 - Some records require manual expert review for strict scholarly categorization.
 
-## Citation
-
-If you reuse this dataset, cite:
-
-`Mishkāt — Mutashābihāt Visualizer, Threadwork Team, 2026, open hackathon dataset release.`
