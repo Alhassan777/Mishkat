@@ -1,6 +1,9 @@
 # Secrets — never commit
 .env
 
+# Vercel
+.vercel/
+
 # Pipeline runtime output
 pipeline/output/
 pipeline/book_profiles/
