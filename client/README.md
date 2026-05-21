@@ -42,7 +42,7 @@ Frontend reads:
 To regenerate this file from the canonical graph:
 
 ```powershell
-$py = "C:\Users\ElhassanElboraey\AppData\Local\Programs\Python\Python312\python.exe"
+$py = "python" # or ".\.venv\Scripts\python.exe"
 & $py scripts/build_graph_data.py
 ```
 

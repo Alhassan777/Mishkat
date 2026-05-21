@@ -30,9 +30,11 @@ Mishkāt centralizes those discussions into searchable, explorable verse-to-vers
 ### 1) Install Python dependencies
 
 ```powershell
-$py = "C:\Users\ElhassanElboraey\AppData\Local\Programs\Python\Python312\python.exe"
-& $py -m pip install -r requirements.txt
+python -m pip install -r requirements.txt
 ```
+
+> On Windows, if `python` is not in your PATH, use the full path to your Python executable, e.g.:
+> `& "C:\Path\To\python.exe" -m pip install -r requirements.txt`
 
 ### 2) Configure environment
 
@@ -42,17 +44,15 @@ $py = "C:\Users\ElhassanElboraey\AppData\Local\Programs\Python\Python312\python.
 ### 3) Run extraction for one book
 
 ```powershell
-$py = "C:\Users\ElhassanElboraey\AppData\Local\Programs\Python\Python312\python.exe"
-& $py -m pipeline.cli.extract --book book_22_iskafi_durra_tanzil --source data/sources --delay 2.0
+python -m pipeline.cli.extract --book book_22_iskafi_durra_tanzil --source data/sources --delay 2.0
 ```
 
 ### 4) Merge and build graph
 
 ```powershell
-$py = "C:\Users\ElhassanElboraey\AppData\Local\Programs\Python\Python312\python.exe"
-& $py pipeline/scripts/merge_records.py
-& $py pipeline/scripts/build_ayah_graph.py
-& $py client/scripts/build_graph_data.py
+python pipeline/scripts/merge_records.py
+python pipeline/scripts/build_ayah_graph.py
+python client/scripts/build_graph_data.py
 ```
 
 ### 5) Run frontend
